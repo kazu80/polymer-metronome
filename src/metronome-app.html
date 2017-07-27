@@ -1,0 +1,19 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<dom-module id="metronome-app">
+    <template>
+        <style>
+            :host {
+                background-color: #0b97c4;
+            }
+        </style>
+        <div>Hello World</div>
+    </template>
+    <script>
+        class MetronomeApp extends Polymer.Element {
+            static get is() { return 'metronome-app'; }
+        }
+
+        window.customElements.define(MetronomeApp.is, MetronomeApp);
+    </script>
+</dom-module>
