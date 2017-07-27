@@ -1,13 +1,30 @@
+<link rel="import" href="../bower_components/app-layout/app-layout.html">
+
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 
 <dom-module id="metronome-app">
     <template>
         <style>
             :host {
-                background-color: #0b97c4;
+                background-color : #0b97c4;
+            }
+
+            app-header {
+                color            : #ffffff;
+                background-color : #00aa88;
+            }
+
+            .main-title {
+                letter-spacing : 5px;
             }
         </style>
-        <div>Hello World</div>
+
+        <app-header reveals>
+            <app-toolbar>
+                <div main-title class="main-title">METRONOME</div>
+            </app-toolbar>
+        </app-header>
+
     </template>
     <script>
         class MetronomeApp extends Polymer.Element {
