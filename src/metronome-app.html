@@ -65,8 +65,9 @@
             static get properties () {
                 return {
                     isPlay         : {
-                        type : Boolean,
-                        value: false,
+                        type    : Boolean,
+                        value   : false,
+                        observer: '_playEvent',
                     },
                     playButtonTitle: {
                         type : String,
@@ -91,6 +92,12 @@
 
             clickConsole () {
                 console.log ('click!');
+            }
+
+            _playEvent (val, old) {
+                if (val) {
+                    console.log ('play metronome');
+                }
             }
         }
 
