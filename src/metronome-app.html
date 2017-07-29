@@ -53,30 +53,40 @@
         <main class="main-wrapper">
             <section class="section-metronome">
                 <element-card>
-                    <paper-button class="fancy" on-click="play">[[buttonName]]</paper-button>
+                    <paper-button class="fancy" on-click="play">[[playButtonTitle]]</paper-button>
                 </element-card>
             </section>
         </main>
     </template>
     <script>
         class MetronomeApp extends Polymer.Element {
-            static get is() { return 'metronome-app'; }
+            static get is () { return 'metronome-app'; }
+
+            static get properties () {
+                return {
+                    isPlay         : {
+                        type : Boolean,
+                        value: false,
+                    },
+                    playButtonTitle: {
+                        type : String,
+                        value: 'PLAY',
+                    },
+                };
+            }
 
             constructor () {
                 super ();
-                this.isPlay = false;
-                this.buttonName = 'PLAY';
             }
 
             play () {
                 this.isPlay = !this.isPlay;
 
                 if (this.isPlay) {
-                    this.buttonName = 'STOP';
+                    this.playButtonTitle = 'STOP';
                 } else {
-                    this.buttonName = 'PLAY';
+                    this.playButtonTitle = 'PLAY';
                 }
-
             }
 
             clickConsole () {
@@ -84,6 +94,6 @@
             }
         }
 
-        window.customElements.define(MetronomeApp.is, MetronomeApp);
+        window.customElements.define (MetronomeApp.is, MetronomeApp);
     </script>
 </dom-module>
