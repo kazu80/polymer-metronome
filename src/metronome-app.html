@@ -53,7 +53,7 @@
         <main class="main-wrapper">
             <section class="section-metronome">
                 <element-card>
-                    <paper-button class="fancy" on-click="clickConsole">PLAY</paper-button>
+                    <paper-button class="fancy" on-click="play">[[buttonName]]</paper-button>
                 </element-card>
             </section>
         </main>
@@ -61,6 +61,23 @@
     <script>
         class MetronomeApp extends Polymer.Element {
             static get is() { return 'metronome-app'; }
+
+            constructor () {
+                super ();
+                this.isPlay = false;
+                this.buttonName = 'PLAY';
+            }
+
+            play () {
+                this.isPlay = !this.isPlay;
+
+                if (this.isPlay) {
+                    this.buttonName = 'STOP';
+                } else {
+                    this.buttonName = 'PLAY';
+                }
+
+            }
 
             clickConsole () {
                 console.log ('click!');
