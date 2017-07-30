@@ -73,6 +73,18 @@
                         type : String,
                         value: 'PLAY',
                     },
+                    interval       : {
+                        type : Number,
+                        value: 0,
+                    },
+                    tempo          : {
+                        type : Number,
+                        value: 100,
+                    },
+                    beatCount      : {
+                        type : Number,
+                        value: 4,
+                    },
                 };
             }
 
@@ -96,8 +108,26 @@
 
             _playEvent (val, old) {
                 if (val) {
-                    console.log ('play metronome');
+                    let count = 0;
+
+                    this.interval = setInterval (() => {
+                        count % this.beatCount === 0 ? this._playBeat () : this._playTempo ();
+                        count++;
+                    }, 60 * 1000 / this.tempo);
+                } else {
+                    if (this.interval) {
+                        clearInterval (this.interval);
+                        this.interval = 0;
+                    }
                 }
+            }
+
+            _playBeat () {
+                console.log ('beat');
+            }
+
+            _playTempo () {
+                console.log ('tempo');
             }
         }
 

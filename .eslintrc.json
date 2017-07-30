@@ -17,7 +17,8 @@
     "space-before-function-paren": "off",
     "func-call-spacing": "off",
     "key-spacing": "off",
-    "no-console": "off"
+    "no-console": "off",
+    "max-len": "off"
   },
   "globals": {
     "Polymer": true
