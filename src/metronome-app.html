@@ -85,11 +85,25 @@
                         type : Number,
                         value: 4,
                     },
+                    soundTempo     : {
+                        type: Object,
+                    },
+                    soundBeat      : {
+                        type: Object,
+                    },
                 };
             }
 
             constructor () {
                 super ();
+
+                this._loadBufferFromURL ('../sound/s_01.mp3', (buffer) => {
+                    console.log ('s_01');
+                });
+
+                this._loadBufferFromURL ('../sound/s_01.mp3', (buffer) => {
+                    console.log ('s_01');
+                });
             }
 
             play () {
@@ -128,6 +142,36 @@
 
             _playTempo () {
                 console.log ('tempo');
+            }
+
+            _loadBufferFromURL (url, callback) {
+                const request = new XMLHttpRequest ();
+                request.open ('GET', url, true);
+                request.responseType = 'arraybuffer';
+
+                request.onload = () => {
+                    const context = new AudioContext ();
+
+                    context.decodeAudioData (request.response,
+                                             function (buffer) {
+                                                 if (!buffer) {
+                                                     alert ('error decoding file data: ' + url);
+                                                     return;
+                                                 }
+
+                                                 callback (buffer);
+                                             },
+                                             function (error) {
+                                                 console.error ('decodeAudioData error', error);
+                                             }
+                    );
+                };
+
+                request.onerror = function () {
+                    alert ('BufferLoader: XHR error');
+                };
+
+                request.send ();
             }
         }
 
