@@ -79,7 +79,7 @@
                     },
                     tempo           : {
                         type : Number,
-                        value: 100,
+                        value: 120, // max 420
                     },
                     beatCount       : {
                         type : Number,
@@ -103,22 +103,44 @@
                 super ();
 
                 this.context = new AudioContext ();
-                this.soundSourceTempo = this.context.createBufferSource ();
-                this.soundSourceBeat = this.context.createBufferSource ();
-                this.soundGainTempo = this.context.createGain ();
-                this.soundGainBeat = this.context.createGain ();
 
                 this._loadBufferFromURL ('../sound/s_01.mp3', (buffer) => {
-                    this.soundSourceTempo.buffer = buffer;
-                    this.soundGainTempo.value = 0.5;
-                    this.soundSourceTempo.connect (this.soundGainTempo);
+                    this.initialTempo (buffer, 0.5);
                 });
 
                 this._loadBufferFromURL ('../sound/s_02.mp3', (buffer) => {
-                    this.soundSourceBeat.buffer = buffer;
-                    this.soundGainBeat.value = 0.5;
-                    this.soundSourceBeat.connect (this.soundGainBeat);
+                    this.initialBeat (buffer, 0.5);
                 });
+            }
+
+            initialTempo (buffer, gain) {
+                this.soundSourceTempo = this.context.createBufferSource ();
+                this.soundGainTempo = this.context.createGain ();
+
+                this.soundSourceTempo.buffer = buffer;
+                this.soundGainTempo.value = gain;
+
+                this.soundGainTempo.connect (this.context.destination);
+                this.soundSourceTempo.connect (this.soundGainTempo);
+
+                this.soundSourceTempo.onended = () => {
+                    this.initialTempo (buffer, gain);
+                };
+            }
+
+            initialBeat (buffer, gain) {
+                this.soundSourceBeat = this.context.createBufferSource ();
+                this.soundGainBeat = this.context.createGain ();
+
+                this.soundSourceBeat.buffer = buffer;
+                this.soundGainBeat.value = 0.5;
+
+                this.soundGainBeat.connect (this.context.destination);
+                this.soundSourceBeat.connect (this.soundGainBeat);
+
+                this.soundSourceBeat.onended = () => {
+                    this.initialBeat (buffer, gain);
+                };
             }
 
             play () {
@@ -152,11 +174,11 @@
             }
 
             _playBeat () {
-                console.log ('beat');
+                this.soundSourceBeat.start (0);
             }
 
             _playTempo () {
-                console.log ('tempo');
+                this.soundSourceTempo.start (0);
             }
 
             _loadBufferFromURL (url, callback) {
