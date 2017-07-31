@@ -73,36 +73,51 @@
                         type : String,
                         value: 'PLAY',
                     },
-                    interval       : {
+                    interval        : {
                         type : Number,
                         value: 0,
                     },
-                    tempo          : {
+                    tempo           : {
                         type : Number,
                         value: 100,
                     },
-                    beatCount      : {
+                    beatCount       : {
                         type : Number,
                         value: 4,
                     },
-                    soundTempo     : {
+                    soundTempo      : {
                         type: Object,
                     },
-                    soundBeat      : {
+                    soundBeat       : {
                         type: Object,
                     },
+                    context         : Object,
+                    soundSourceTempo: Object,
+                    soundSourceBeat : Object,
+                    soundGainTempo  : Object,
+                    soundGainBeat   : Object,
                 };
             }
 
             constructor () {
                 super ();
 
-                this._loadBufferFromURL ('../sound/s_01.mp3', (buffer) => {
-                    console.log ('s_01');
-                });
+                this.context = new AudioContext ();
+                this.soundSourceTempo = this.context.createBufferSource ();
+                this.soundSourceBeat = this.context.createBufferSource ();
+                this.soundGainTempo = this.context.createGain ();
+                this.soundGainBeat = this.context.createGain ();
 
                 this._loadBufferFromURL ('../sound/s_01.mp3', (buffer) => {
-                    console.log ('s_01');
+                    this.soundSourceTempo.buffer = buffer;
+                    this.soundGainTempo.value = 0.5;
+                    this.soundSourceTempo.connect (this.soundGainTempo);
+                });
+
+                this._loadBufferFromURL ('../sound/s_02.mp3', (buffer) => {
+                    this.soundSourceBeat.buffer = buffer;
+                    this.soundGainBeat.value = 0.5;
+                    this.soundSourceBeat.connect (this.soundGainBeat);
                 });
             }
 
