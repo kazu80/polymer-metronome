@@ -1,0 +1,58 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+
+<dom-module id="metronome-tempo">
+    <template>
+        <style>
+            :host {
+                width : 100%;
+            }
+
+            .action-wrapper {
+                display         : flex;
+                flex-direction  : row;
+                justify-content : space-between;
+                width           : 100%;
+            }
+
+            .btn {
+                width : 45%;
+            }
+        </style>
+
+        <div>cc[[tempo]]pp</div>
+
+        <div class="action-wrapper">
+            <paper-button raised class="green btn btn-back" on-click="back">&lt;</paper-button>
+            <paper-button raised class="green btn btn-next" on-click="next">&gt;</paper-button>
+        </div>
+    </template>
+    <script>
+        class MetronomeTempo extends Polymer.Element {
+            static get is () { return 'metronome-tempo'; }
+
+            static get properties () {
+                return {
+                    tempo: {
+                        type: Number,
+                    },
+                };
+            }
+
+            constructor () {
+                super ();
+            }
+
+            back () {
+                this.tempo = this.tempo - 1;
+            }
+
+            next () {
+                this.tempo = this.tempo + 1;
+            }
+        }
+
+        window.customElements.define (MetronomeTempo.is, MetronomeTempo);
+    </script>
+</dom-module>

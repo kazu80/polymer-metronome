@@ -3,6 +3,7 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="./metronome/element-card.html">
+<link rel="import" href="./metronome/metronome-tempo.html">
 
 <dom-module id="metronome-app">
     <template>
@@ -54,6 +55,10 @@
             <section class="section-metronome">
                 <element-card>
                     <paper-button class="fancy" on-click="play">[[playButtonTitle]]</paper-button>
+                </element-card>
+                <element-card>
+                    <div>{{tempo}}</div>
+                    <metronome-tempo tempo="{{tempo}}"></metronome-tempo>
                 </element-card>
             </section>
         </main>
