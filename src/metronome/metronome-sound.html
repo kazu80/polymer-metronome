@@ -1,0 +1,75 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="./element-display.html">
+
+<dom-module id="metronome-sound">
+    <template>
+        <style>
+            :host {
+                width : 100%;
+            }
+
+            .sound-wrapper {
+                display         : flex;
+                flex-direction  : column;
+                justify-content : space-between;
+                width           : 100%;
+                height          : 180px;
+            }
+
+            .action-wrapper {
+                display         : flex;
+                flex-direction  : row;
+                justify-content : space-between;
+                width           : 100%;
+            }
+
+            paper-button.fancy {
+                background : #3f51b5;
+                color      : #ffffff;
+            }
+
+            .btn {
+                width : 45%;
+            }
+        </style>
+
+        <div class="sound-wrapper">
+            <element-display>[[sound]]</element-display>
+
+            <div class="action-wrapper">
+                <paper-button raised class="fancy btn btn-back" on-click="back">&lt;</paper-button>
+                <paper-button raised class="fancy btn btn-next" on-click="next">&gt;</paper-button>
+            </div>
+        </div>
+    </template>
+    <script>
+        class MetronomeSound extends Polymer.Element {
+            static get is () { return 'metronome-sound'; }
+
+            static get properties () {
+                return {
+                    sound: {
+                        type  : Number,
+                        notify: true,
+                    },
+                };
+            }
+
+            constructor () {
+                super ();
+            }
+
+            back () {
+                this.sound = this.sound - 1;
+            }
+
+            next () {
+                this.sound = this.sound + 1;
+            }
+        }
+
+        window.customElements.define (MetronomeSound.is, MetronomeSound);
+    </script>
+</dom-module>

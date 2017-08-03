@@ -4,6 +4,7 @@
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="./metronome/element-card.html">
 <link rel="import" href="./metronome/metronome-tempo.html">
+<link rel="import" href="./metronome/metronome-sound.html">
 
 <dom-module id="metronome-app">
     <template>
@@ -67,6 +68,7 @@
                 <div class="content-wrapper">
                     <element-card>
                         <div>{{tempo}}</div>
+                        <div>{{sound}}</div>
                         <paper-button class="fancy" on-click="play">[[playButtonTitle]]</paper-button>
                     </element-card>
                 </div>
@@ -74,6 +76,12 @@
                 <div class="content-wrapper">
                     <element-card>
                         <metronome-tempo tempo="{{tempo}}"></metronome-tempo>
+                    </element-card>
+                </div>
+
+                <div class="content-wrapper">
+                    <element-card>
+                        <metronome-sound sound="{{sound}}"></metronome-sound>
                     </element-card>
                 </div>
 
@@ -86,12 +94,12 @@
 
             static get properties () {
                 return {
-                    isPlay         : {
+                    isPlay          : {
                         type    : Boolean,
                         value   : false,
                         observer: '_playEvent',
                     },
-                    playButtonTitle: {
+                    playButtonTitle : {
                         type : String,
                         value: 'PLAY',
                     },
@@ -102,6 +110,10 @@
                     tempo           : {
                         type : Number,
                         value: 120, // max 420
+                    },
+                    sound           : {
+                        type : Number,
+                        value: 1,
                     },
                     beatCount       : {
                         type : Number,
