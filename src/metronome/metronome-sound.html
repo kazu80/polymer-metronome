@@ -33,10 +33,27 @@
             .btn {
                 width : 45%;
             }
+
+            ul {
+                padding : 0;
+                margin  : 0;
+            }
+
+            ul li {
+                display       : inline;
+                font-size     : 65px;
+                padding-right : 5px;
+            }
         </style>
 
         <div class="sound-wrapper">
-            <element-display>[[sound]]</element-display>
+            <element-display add-class="center">
+                <ul>
+                    <template is="dom-repeat" items="{{soundArray}}">
+                        <li>[[item.id]]</li>
+                    </template>
+                </ul>
+            </element-display>
 
             <div class="action-wrapper">
                 <paper-button raised class="fancy btn btn-back" on-click="back">&lt;</paper-button>
@@ -50,9 +67,18 @@
 
             static get properties () {
                 return {
-                    sound: {
+                    sound     : {
                         type  : Number,
                         notify: true,
+                    },
+                    soundArray: {
+                        type : Array,
+                        value: [
+                            {id: 1, file: '../../sound/s_01.mp3'},
+                            {id: 2, file: '../../sound/s_02.mp3'},
+                            {id: 3, file: '../../sound/s_03.mp3'},
+                            {id: 4, file: '../../sound/s_04.mp3'},
+                        ],
                     },
                 };
             }

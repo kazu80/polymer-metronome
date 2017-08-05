@@ -9,12 +9,19 @@
 
             .display-wrapper {
                 display         : flex;
-                justify-content : flex-end;
                 align-items     : center;
                 padding         : 10px;
                 height          : 80px;
                 border          : 1px solid #888888;
                 border-radius   : 4px;
+            }
+
+            .display-wrapper.center {
+                justify-content : center;
+            }
+
+            .display-wrapper.right {
+                justify-content : flex-end;
             }
 
             .olive {
@@ -35,7 +42,7 @@
             }
         </style>
 
-        <div class="gray display-wrapper">
+        <div class$="gray display-wrapper [[addClass]]">
             <div class="display">
                 <slot></slot>
             </div>
@@ -45,6 +52,20 @@
     <script>
         class ElementDisplay extends Polymer.Element {
             static get is () { return 'element-display'; }
+
+            static get properties () {
+                return {
+                    center: {
+                        type : Boolean,
+                        value: false,
+                    },
+
+                    addClass: {
+                        type : String,
+                        value: 'right',
+                    },
+                };
+            }
         }
 
         window.customElements.define (ElementDisplay.is, ElementDisplay);
