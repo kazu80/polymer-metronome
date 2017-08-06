@@ -50,7 +50,12 @@
             <element-display add-class="center">
                 <ul>
                     <template is="dom-repeat" items="{{soundArray}}">
-                        <li>[[item.id]]</li>
+                        <template is="dom-if" if="{{item.active}}">
+                            <li style="color: #3f51b5; font-weight: bold">[[item.id]]</li>
+                        </template>
+                        <template is="dom-if" if="{{!item.active}}">
+                            <li>[[item.id]]</li>
+                        </template>
                     </template>
                 </ul>
             </element-display>
@@ -71,15 +76,6 @@
                         type  : Number,
                         notify: true,
                     },
-                    soundArray: {
-                        type : Array,
-                        value: [
-                            {id: 1, file: '../../sound/s_01.mp3'},
-                            {id: 2, file: '../../sound/s_02.mp3'},
-                            {id: 3, file: '../../sound/s_03.mp3'},
-                            {id: 4, file: '../../sound/s_04.mp3'},
-                        ],
-                    },
                 };
             }
 
@@ -88,11 +84,15 @@
             }
 
             back () {
-                this.sound = this.sound - 1;
+                if (this.sound > 1) {
+                    this.sound = this.sound - 1;
+                }
             }
 
             next () {
-                this.sound = this.sound + 1;
+                if (this.sound < this.soundArray.length) {
+                    this.sound = this.sound + 1;
+                }
             }
         }
 

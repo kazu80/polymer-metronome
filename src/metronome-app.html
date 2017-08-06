@@ -81,7 +81,7 @@
 
                 <div class="content-wrapper">
                     <element-card>
-                        <metronome-sound sound="{{sound}}"></metronome-sound>
+                        <metronome-sound sound="{{sound}}" sound-array="{{sounds}}"></metronome-sound>
                     </element-card>
                 </div>
 
@@ -112,9 +112,11 @@
                         value: 120, // max 420
                     },
                     sound           : {
-                        type : Number,
-                        value: 1,
+                        type    : Number,
+                        value   : 1,
+                        observer: '_observerSound',
                     },
+                    sounds          : Array,
                     beatCount       : {
                         type : Number,
                         value: 4,
@@ -145,6 +147,13 @@
                 this._loadBufferFromURL ('../sound/s_02.mp3', (buffer) => {
                     this.initialBeat (buffer, 0.5);
                 });
+
+                this.sounds = [
+                    {id: 1, file: '../../sound/s_01.mp3', active: false},
+                    {id: 2, file: '../../sound/s_02.mp3', active: false},
+                    {id: 3, file: '../../sound/s_03.mp3', active: false},
+                    {id: 4, file: '../../sound/s_04.mp3', active: false},
+                ];
             }
 
             initialTempo (buffer, gain) {
@@ -243,6 +252,25 @@
                 };
 
                 request.send ();
+            }
+
+            _observerSound (latest, old) {
+                if (old) {
+                    const offIndex = old - 1;
+                    const offFile = this.sounds[offIndex].file;
+
+                    // パラメーターの変更
+                    this.sounds.splice (offIndex, 1, {id: old, file: offFile, active: false});
+                }
+
+                const onIndex = latest - 1;
+                const onFile = this.sounds[onIndex].file;
+
+                // パラメーターの変更
+                this.sounds.splice (onIndex, 1, {id: latest, file: onFile, active: true});
+
+                // 配列の変更通知。これをしない変更検知されない
+                this.notifySplices ('sounds', []);
             }
         }
 
