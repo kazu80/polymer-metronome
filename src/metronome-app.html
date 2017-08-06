@@ -5,6 +5,7 @@
 <link rel="import" href="./metronome/element-card.html">
 <link rel="import" href="./metronome/metronome-tempo.html">
 <link rel="import" href="./metronome/metronome-sound.html">
+<link rel="import" href="./metronome/metronome-beat.html">
 
 <dom-module id="metronome-app">
     <template>
@@ -30,16 +31,13 @@
                 display         : flex;
                 flex-direction  : row;
                 justify-content : space-between;
-            }
-
-            .section-metronome .content-wrapper {
-                width : 45%;
-            }
-
-            .section-metronome {
                 margin-bottom : 10px;
                 width         : 100%;
                 height        : 230px;
+            }
+
+            .section-metronome .content-wrapper {
+                width : 30%;
             }
 
             paper-button {
@@ -64,15 +62,6 @@
 
         <main class="main-wrapper">
             <section class="section-metronome">
-
-                <div class="content-wrapper">
-                    <element-card>
-                        <div>{{tempo}}</div>
-                        <div>{{sound}}</div>
-                        <paper-button class="fancy" on-click="play">[[playButtonTitle]]</paper-button>
-                    </element-card>
-                </div>
-
                 <div class="content-wrapper">
                     <element-card>
                         <metronome-tempo tempo="{{tempo}}"></metronome-tempo>
@@ -81,10 +70,26 @@
 
                 <div class="content-wrapper">
                     <element-card>
-                        <metronome-sound sound="{{sound}}" sound-array="{{sounds}}"></metronome-sound>
+                        <metronome-beat beat="{{beat}}" beats="{{beats}}"></metronome-beat>
                     </element-card>
                 </div>
 
+                <div class="content-wrapper">
+                    <element-card>
+                        <metronome-sound sound="{{sound}}" sound-array="{{sounds}}"></metronome-sound>
+                    </element-card>
+                </div>
+            </section>
+
+            <section class="section-metronome">
+                <div class="content-wrapper">
+                    <element-card>
+                        <div>{{tempo}}</div>
+                        <div>{{sound}}</div>
+                        <div>{{beat}}</div>
+                        <paper-button class="fancy" on-click="play">[[playButtonTitle]]</paper-button>
+                    </element-card>
+                </div>
             </section>
         </main>
     </template>
@@ -117,10 +122,12 @@
                         observer: '_observerSound',
                     },
                     sounds          : Array,
-                    beatCount       : {
-                        type : Number,
-                        value: 4,
+                    beat            : {
+                        type    : Number,
+                        value   : 4,
+                        observer: '_observerBeat',
                     },
+                    beats           : Array,
                     soundTempo      : {
                         type: Object,
                     },
@@ -153,6 +160,17 @@
                     {id: 2, file: '../../sound/s_02.mp3', active: false},
                     {id: 3, file: '../../sound/s_03.mp3', active: false},
                     {id: 4, file: '../../sound/s_04.mp3', active: false},
+                ];
+
+                this.beats = [
+                    {id: 1, active: false},
+                    {id: 2, active: false},
+                    {id: 3, active: false},
+                    {id: 4, active: false},
+                    {id: 5, active: false},
+                    {id: 6, active: false},
+                    {id: 7, active: false},
+                    {id: 8, active: false},
                 ];
             }
 
@@ -196,16 +214,12 @@
                 }
             }
 
-            clickConsole () {
-                console.log ('click!');
-            }
-
             _playEvent (val, old) {
                 if (val) {
                     let count = 0;
 
                     this.interval = setInterval (() => {
-                        count % this.beatCount === 0 ? this._playBeat () : this._playTempo ();
+                        count % this.beat === 0 ? this._playBeat () : this._playTempo ();
                         count++;
                     }, 60 * 1000 / this.tempo);
                 } else {
@@ -274,6 +288,23 @@
                 this._loadBufferFromURL (onFile, (buffer) => {
                     this.initialTempo (buffer, 0.5);
                 });
+            }
+
+            _observerBeat (latest, old) {
+                if (old) {
+                    const offIndex = old - 1;
+
+                    // パラメーターの変更
+                    this.beats.splice (offIndex, 1, {id: old, active: false});
+                }
+
+                const onIndex = latest - 1;
+
+                // パラメーターの変更
+                this.beats.splice (onIndex, 1, {id: latest, active: true});
+
+                // 配列の変更通知。これをしない変更検知されない
+                this.notifySplices ('beats', []);
             }
         }
 
