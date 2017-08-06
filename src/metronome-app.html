@@ -230,10 +230,8 @@
                 request.responseType = 'arraybuffer';
 
                 request.onload = () => {
-                    const context = new AudioContext ();
-
-                    context.decodeAudioData (request.response,
-                                             function (buffer) {
+                    this.context.decodeAudioData (request.response,
+                                                  function (buffer) {
                                                  if (!buffer) {
                                                      alert ('error decoding file data: ' + url);
                                                      return;
@@ -241,7 +239,7 @@
 
                                                  callback (buffer);
                                              },
-                                             function (error) {
+                                                  function (error) {
                                                  console.error ('decodeAudioData error', error);
                                              }
                     );
@@ -271,6 +269,11 @@
 
                 // 配列の変更通知。これをしない変更検知されない
                 this.notifySplices ('sounds', []);
+
+                //
+                this._loadBufferFromURL (onFile, (buffer) => {
+                    this.initialTempo (buffer, 0.5);
+                });
             }
         }
 
