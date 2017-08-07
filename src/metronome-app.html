@@ -205,13 +205,13 @@
                 this.soundGainTempo = this.context.createGain ();
 
                 this.soundSourceTempo.buffer = buffer;
-                this.soundGainTempo.value = gain;
+                this.soundGainTempo.gain.value = gain;
 
                 this.soundGainTempo.connect (this.context.destination);
                 this.soundSourceTempo.connect (this.soundGainTempo);
 
                 this.soundSourceTempo.onended = () => {
-                    this.initialTempo (buffer, gain);
+                    this.initialTempo (buffer, this.volume * 0.1);
                 };
             }
 
@@ -220,13 +220,13 @@
                 this.soundGainBeat = this.context.createGain ();
 
                 this.soundSourceBeat.buffer = buffer;
-                this.soundGainBeat.value = gain;
+                this.soundGainBeat.gain.value = gain;
 
                 this.soundGainBeat.connect (this.context.destination);
                 this.soundSourceBeat.connect (this.soundGainBeat);
 
                 this.soundSourceBeat.onended = () => {
-                    this.initialBeat (buffer, gain);
+                    this.initialBeat (buffer, this.volume * 0.1);
                 };
             }
 
@@ -313,7 +313,7 @@
 
                 //
                 this._loadBufferFromURL (onFile, (buffer) => {
-                    this.initialTempo (buffer, 0.5);
+                    this.initialTempo (buffer, this.volume * 0.1);
                 });
             }
 
@@ -352,10 +352,10 @@
 
                 // Volumeの更新
                 if (this.soundGainTempo) {
-                    this.soundGainTempo.value = latest * 0.1;
+                    this.soundGainTempo.gain.value = latest * 0.1;
                 }
                 if (this.soundGainBeat) {
-                    this.soundGainBeat.value = latest * 0.1;
+                    this.soundGainBeat.gain.value = latest * 0.1;
                 }
             }
         }
