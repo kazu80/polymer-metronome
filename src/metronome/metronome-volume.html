@@ -1,0 +1,108 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="./element-display.html">
+
+<dom-module id="metronome-volume">
+    <template>
+        <style>
+            :host {
+
+            }
+
+            .volume-wrapper {
+                display         : flex;
+                flex-direction  : column;
+                justify-content : space-between;
+                width           : 100%;
+                height          : 210px;
+            }
+
+            ul {
+                display         : flex;
+                flex-direction  : row;
+                justify-content : space-around;
+                padding         : 0;
+                margin          : 0;
+                width           : 250px;
+            }
+
+            ul li {
+                font-size  : 34px;
+                list-style : none;
+            }
+
+            .action-wrapper {
+                display         : flex;
+                flex-direction  : row;
+                justify-content : space-between;
+                width           : 100%;
+            }
+
+            .action-wrapper paper-button.fancy {
+                background : #3f51b5;
+                color      : #ffffff;
+            }
+
+            .action-wrapper paper-button.btn {
+                margin : 0;
+                width  : 48%;
+            }
+
+        </style>
+
+        <div class="volume-wrapper">
+            <div class="title">VOLUME</div>
+            <element-display add-class="center">
+                <ul>
+                    <template is="dom-repeat" items="{{volumes}}">
+                        <template is="dom-if" if="{{item.active}}">
+                            <li style="color: #3f51b5">●</li>
+                        </template>
+                        <template is="dom-if" if="{{!item.active}}">
+                            <li style="color: #ffffff">●</li>
+                        </template>
+                    </template>
+                </ul>
+            </element-display>
+
+            <div class="action-wrapper">
+                <paper-button raised class="fancy btn btn-back" on-click="back">&lt;</paper-button>
+                <paper-button raised class="fancy btn btn-next" on-click="next">&gt;</paper-button>
+            </div>
+        </div>
+
+    </template>
+
+    <script>
+        class MetronomeVolume extends Polymer.Element {
+            static get is () { return 'metronome-volume'; }
+
+            static get properties () {
+                return {
+                    volume: {
+                        type  : Number,
+                        notify: true,
+                    },
+                };
+            }
+
+            constructor () {
+                super ();
+            }
+
+            back () {
+                if (this.volume > 1) {
+                    this.volume = this.volume - 1;
+                }
+            }
+
+            next () {
+                if (this.volume < this.volumes.length) {
+                    this.volume = this.volume + 1;
+                }
+            }
+        }
+
+        window.customElements.define (MetronomeVolume.is, MetronomeVolume);
+    </script>
+</dom-module>

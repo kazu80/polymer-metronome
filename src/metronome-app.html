@@ -6,6 +6,7 @@
 <link rel="import" href="./metronome/metronome-tempo.html">
 <link rel="import" href="./metronome/metronome-sound.html">
 <link rel="import" href="./metronome/metronome-beat.html">
+<link rel="import" href="./metronome/metronome-volume.html">
 
 <dom-module id="metronome-app">
     <template>
@@ -84,9 +85,16 @@
             <section class="section-metronome">
                 <div class="content-wrapper">
                     <element-card>
+                        <metronome-volume volume="{{volume}}" volumes="{{volumes}}"></metronome-volume>
+                    </element-card>
+                </div>
+
+                <div class="content-wrapper">
+                    <element-card>
                         <div>{{tempo}}</div>
                         <div>{{sound}}</div>
                         <div>{{beat}}</div>
+                        <div>{{volume}}</div>
                         <paper-button class="fancy" on-click="play">[[playButtonTitle]]</paper-button>
                     </element-card>
                 </div>
@@ -99,6 +107,11 @@
 
             static get properties () {
                 return {
+                    context         : Object,
+                    soundSourceTempo: Object,
+                    soundSourceBeat : Object,
+                    soundGainTempo  : Object,
+                    soundGainBeat   : Object,
                     isPlay          : {
                         type    : Boolean,
                         value   : false,
@@ -128,17 +141,18 @@
                         observer: '_observerBeat',
                     },
                     beats           : Array,
+                    volume          : {
+                        type    : Number,
+                        value   : 5,
+                        observer: '_observerVolume',
+                    },
+                    volumes         : Array,
                     soundTempo      : {
                         type: Object,
                     },
                     soundBeat       : {
                         type: Object,
                     },
-                    context         : Object,
-                    soundSourceTempo: Object,
-                    soundSourceBeat : Object,
-                    soundGainTempo  : Object,
-                    soundGainBeat   : Object,
                 };
             }
 
@@ -148,11 +162,11 @@
                 this.context = new AudioContext ();
 
                 this._loadBufferFromURL ('../sound/s_01.mp3', (buffer) => {
-                    this.initialTempo (buffer, 0.5);
+                    this.initialTempo (buffer, this.volume * 0.1);
                 });
 
                 this._loadBufferFromURL ('../sound/s_02.mp3', (buffer) => {
-                    this.initialBeat (buffer, 0.5);
+                    this.initialBeat (buffer, this.volume * 0.1);
                 });
 
                 this.sounds = [
@@ -171,6 +185,18 @@
                     {id: 6, active: false},
                     {id: 7, active: false},
                     {id: 8, active: false},
+                ];
+
+                this.volumes = [
+                    {id: 1, active: false},
+                    {id: 2, active: false},
+                    {id: 3, active: false},
+                    {id: 4, active: false},
+                    {id: 5, active: false},
+                    {id: 6, active: false},
+                    {id: 7, active: false},
+                    {id: 8, active: false},
+                    {id: 9, active: false},
                 ];
             }
 
@@ -194,7 +220,7 @@
                 this.soundGainBeat = this.context.createGain ();
 
                 this.soundSourceBeat.buffer = buffer;
-                this.soundGainBeat.value = 0.5;
+                this.soundGainBeat.value = gain;
 
                 this.soundGainBeat.connect (this.context.destination);
                 this.soundSourceBeat.connect (this.soundGainBeat);
@@ -214,6 +240,7 @@
                 }
             }
 
+            // Playボタンのオブザーバー
             _playEvent (val, old) {
                 if (val) {
                     let count = 0;
@@ -305,6 +332,31 @@
 
                 // 配列の変更通知。これをしない変更検知されない
                 this.notifySplices ('beats', []);
+            }
+
+            _observerVolume (latest, old) {
+                if (old) {
+                    const offIndex = old - 1;
+
+                    // パラメーターの変更
+                    this.volumes.splice (offIndex, 1, {id: old, active: false});
+                }
+
+                const onIndex = latest - 1;
+
+                // パラメーターの変更
+                this.volumes.splice (onIndex, 1, {id: latest, active: true});
+
+                // 配列の変更通知。これをしない変更検知されない
+                this.notifySplices ('volumes', []);
+
+                // Volumeの更新
+                if (this.soundGainTempo) {
+                    this.soundGainTempo.value = latest * 0.1;
+                }
+                if (this.soundGainBeat) {
+                    this.soundGainBeat.value = latest * 0.1;
+                }
             }
         }
 
