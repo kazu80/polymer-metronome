@@ -1,0 +1,169 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/iron-icons/maps-icons.html">
+<link rel="import" href="./element-display.html">
+
+<dom-module id="metronome-play">
+    <template>
+        <style>
+            :host {
+
+            }
+
+            .action-wrapper paper-button.fancy {
+                background : #3f51b5;
+                color      : #ffffff;
+            }
+        </style>
+
+        <div class="action-wrapper">
+            <paper-button raised class="fancy btn btn-play" on-click="play">
+                [[playButtonTitle]]
+            </paper-button>
+        </div>
+
+    </template>
+    <script>
+        class MetronomePlay extends Polymer.Element {
+            static get is () { return 'metronome-play'; }
+
+            static get properties () {
+                return {
+                    context         : Object,
+                    soundSourceTempo: Object,
+                    soundSourceBeat : Object,
+                    soundGainTempo  : Object,
+                    soundGainBeat   : Object,
+
+                    isPlay         : {
+                        type    : Boolean,
+                        value   : false,
+                        observer: '_observerPlay',
+                    },
+                    playButtonTitle: {
+                        type : String,
+                        value: 'PLAY',
+                    },
+                    interval       : {
+                        type : Number,
+                        value: 0,
+                    },
+                };
+            }
+
+            constructor () {
+                super ();
+
+                this.context = new AudioContext ();
+            }
+
+            ready () {
+                super.ready ();
+
+                this._loadBufferFromURL (this.sounds[0].file, (buffer) => {
+                    this.initialTempo (buffer, this.volume * 0.1);
+                });
+
+                this._loadBufferFromURL (this.sounds[1].file, (buffer) => {
+                    this.initialBeat (buffer, this.volume * 0.1);
+                });
+            }
+
+            initialTempo (buffer, gain) {
+                this.soundSourceTempo = this.context.createBufferSource ();
+                this.soundGainTempo = this.context.createGain ();
+
+                this.soundSourceTempo.buffer = buffer;
+                this.soundGainTempo.gain.value = gain;
+
+                this.soundGainTempo.connect (this.context.destination);
+                this.soundSourceTempo.connect (this.soundGainTempo);
+
+                this.soundSourceTempo.onended = () => {
+                    this.initialTempo (buffer, this.volume * 0.1);
+                };
+            }
+
+            initialBeat (buffer, gain) {
+                this.soundSourceBeat = this.context.createBufferSource ();
+                this.soundGainBeat = this.context.createGain ();
+
+                this.soundSourceBeat.buffer = buffer;
+                this.soundGainBeat.gain.value = gain;
+
+                this.soundGainBeat.connect (this.context.destination);
+                this.soundSourceBeat.connect (this.soundGainBeat);
+
+                this.soundSourceBeat.onended = () => {
+                    this.initialBeat (buffer, this.volume * 0.1);
+                };
+            }
+
+            play () {
+                this.isPlay = !this.isPlay;
+
+                if (this.isPlay) {
+                    this.playButtonTitle = 'STOP';
+                } else {
+                    this.playButtonTitle = 'PLAY';
+                }
+            }
+
+            // Playボタンのオブザーバー
+            _observerPlay (val, old) {
+                if (val) {
+                    let count = 0;
+
+                    this.interval = setInterval (() => {
+                        count % this.beat === 0 ? this._playBeat () : this._playTempo ();
+                        count++;
+                    }, 60 * 1000 / this.tempo);
+                } else {
+                    if (this.interval) {
+                        clearInterval (this.interval);
+                        this.interval = 0;
+                    }
+                }
+            }
+
+            _playBeat () {
+                this.soundSourceBeat.start (0);
+            }
+
+            _playTempo () {
+                this.soundSourceTempo.start (0);
+            }
+
+            // Loading file
+            _loadBufferFromURL (url, callback) {
+                const request = new XMLHttpRequest ();
+                request.open ('GET', url, true);
+                request.responseType = 'arraybuffer';
+
+                request.onload = () => {
+                    this.context.decodeAudioData (request.response,
+                                                  function (buffer) {
+                                                      if (!buffer) {
+                                                          alert ('error decoding file data: ' + url);
+                                                          return;
+                                                      }
+
+                                                      callback (buffer);
+                                                  },
+                                                  function (error) {
+                                                      console.error ('decodeAudioData error', error);
+                                                  }
+                    );
+                };
+
+                request.onerror = function () {
+                    alert ('BufferLoader: XHR error');
+                };
+
+                request.send ();
+            }
+        }
+
+        window.customElements.define (MetronomePlay.is, MetronomePlay);
+    </script>
+</dom-module>

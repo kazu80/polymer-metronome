@@ -7,6 +7,7 @@
 <link rel="import" href="./metronome/metronome-sound.html">
 <link rel="import" href="./metronome/metronome-beat.html">
 <link rel="import" href="./metronome/metronome-volume.html">
+<link rel="import" href="./metronome/metronome-play.html">
 
 <dom-module id="metronome-app">
     <template>
@@ -91,11 +92,7 @@
 
                 <div class="content-wrapper">
                     <element-card>
-                        <div>{{tempo}}</div>
-                        <div>{{sound}}</div>
-                        <div>{{beat}}</div>
-                        <div>{{volume}}</div>
-                        <paper-button class="fancy" on-click="play">[[playButtonTitle]]</paper-button>
+                        <metronome-play tempo="[[tempo]]" sound="[[sound]]" sounds="[[sounds]]" beat="[[beat]]" volume="[[volume]]"></metronome-play>
                     </element-card>
                 </div>
             </section>
@@ -107,24 +104,6 @@
 
             static get properties () {
                 return {
-                    context         : Object,
-                    soundSourceTempo: Object,
-                    soundSourceBeat : Object,
-                    soundGainTempo  : Object,
-                    soundGainBeat   : Object,
-                    isPlay          : {
-                        type    : Boolean,
-                        value   : false,
-                        observer: '_playEvent',
-                    },
-                    playButtonTitle : {
-                        type : String,
-                        value: 'PLAY',
-                    },
-                    interval        : {
-                        type : Number,
-                        value: 0,
-                    },
                     tempo           : {
                         type : Number,
                         value: 120, // max 420
@@ -159,16 +138,6 @@
             constructor () {
                 super ();
 
-                this.context = new AudioContext ();
-
-                this._loadBufferFromURL ('../sound/s_01.mp3', (buffer) => {
-                    this.initialTempo (buffer, this.volume * 0.1);
-                });
-
-                this._loadBufferFromURL ('../sound/s_02.mp3', (buffer) => {
-                    this.initialBeat (buffer, this.volume * 0.1);
-                });
-
                 this.sounds = [
                     {id: 1, file: '../../sound/s_01.mp3', active: false},
                     {id: 2, file: '../../sound/s_02.mp3', active: false},
@@ -200,71 +169,8 @@
                 ];
             }
 
-            initialTempo (buffer, gain) {
-                this.soundSourceTempo = this.context.createBufferSource ();
-                this.soundGainTempo = this.context.createGain ();
-
-                this.soundSourceTempo.buffer = buffer;
-                this.soundGainTempo.gain.value = gain;
-
-                this.soundGainTempo.connect (this.context.destination);
-                this.soundSourceTempo.connect (this.soundGainTempo);
-
-                this.soundSourceTempo.onended = () => {
-                    this.initialTempo (buffer, this.volume * 0.1);
-                };
-            }
-
-            initialBeat (buffer, gain) {
-                this.soundSourceBeat = this.context.createBufferSource ();
-                this.soundGainBeat = this.context.createGain ();
-
-                this.soundSourceBeat.buffer = buffer;
-                this.soundGainBeat.gain.value = gain;
-
-                this.soundGainBeat.connect (this.context.destination);
-                this.soundSourceBeat.connect (this.soundGainBeat);
-
-                this.soundSourceBeat.onended = () => {
-                    this.initialBeat (buffer, this.volume * 0.1);
-                };
-            }
-
-            play () {
-                this.isPlay = !this.isPlay;
-
-                if (this.isPlay) {
-                    this.playButtonTitle = 'STOP';
-                } else {
-                    this.playButtonTitle = 'PLAY';
-                }
-            }
-
-            // Playボタンのオブザーバー
-            _playEvent (val, old) {
-                if (val) {
-                    let count = 0;
-
-                    this.interval = setInterval (() => {
-                        count % this.beat === 0 ? this._playBeat () : this._playTempo ();
-                        count++;
-                    }, 60 * 1000 / this.tempo);
-                } else {
-                    if (this.interval) {
-                        clearInterval (this.interval);
-                        this.interval = 0;
-                    }
-                }
-            }
-
-            _playBeat () {
-                this.soundSourceBeat.start (0);
-            }
-
-            _playTempo () {
-                this.soundSourceTempo.start (0);
-            }
-
+            // SOUNDファイルを切り替えるために読み込みが必要
+            /*
             _loadBufferFromURL (url, callback) {
                 const request = new XMLHttpRequest ();
                 request.open ('GET', url, true);
@@ -292,6 +198,7 @@
 
                 request.send ();
             }
+            */
 
             _observerSound (latest, old) {
                 if (old) {
@@ -311,10 +218,12 @@
                 // 配列の変更通知。これをしない変更検知されない
                 this.notifySplices ('sounds', []);
 
-                //
+                // SOUNDファイルを切り替えるために読み込みが必要
+                /*
                 this._loadBufferFromURL (onFile, (buffer) => {
                     this.initialTempo (buffer, this.volume * 0.1);
                 });
+                */
             }
 
             _observerBeat (latest, old) {
