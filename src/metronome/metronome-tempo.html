@@ -1,5 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-slider/paper-slider.html">
+<link rel="import" href="../../bower_components/paper-progress/paper-progress.html">
 <link rel="import" href="./element-display.html">
 
 <dom-module id="metronome-tempo">
@@ -24,6 +26,10 @@
                 width           : 100%;
             }
 
+            .action-wrapper paper-slider {
+                width : 100%;
+            }
+
             paper-button.fancy {
                 background : #3f51b5;
                 color      : #ffffff;
@@ -40,8 +46,7 @@
             <element-display>[[tempo]]</element-display>
 
             <div class="action-wrapper">
-                <paper-button raised class="fancy btn btn-back" on-click="back">&lt;</paper-button>
-                <paper-button raised class="fancy btn btn-next" on-click="next">&gt;</paper-button>
+                <paper-slider pin="true" value="{{tempo}}" min="1" max="255" step="1"></paper-slider>
             </div>
         </div>
     </template>
@@ -60,14 +65,6 @@
 
             constructor () {
                 super ();
-            }
-
-            back () {
-                this.tempo = this.tempo - 1;
-            }
-
-            next () {
-                this.tempo = this.tempo + 1;
             }
         }
 
