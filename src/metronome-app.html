@@ -2,6 +2,7 @@
 
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="./metronome/element-card.html">
 <link rel="import" href="./metronome/metronome-tempo.html">
 <link rel="import" href="./metronome/metronome-sound.html">
@@ -22,6 +23,8 @@
             }
 
             .main-title {
+                display        : flex;
+                align-items    : center;
                 letter-spacing : 5px;
             }
 
@@ -58,7 +61,10 @@
 
         <app-header reveals>
             <app-toolbar>
-                <div main-title class="main-title">METRONOME</div>
+                <div main-title class="main-title">
+                    METRONOME
+                    <iron-icon icon="icons:polymer"></iron-icon>
+                </div>
             </app-toolbar>
         </app-header>
 
