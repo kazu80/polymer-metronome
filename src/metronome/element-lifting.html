@@ -1,5 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 
 <dom-module id="element-lifting">
     <template>
@@ -27,8 +28,12 @@
         </style>
 
         <div class="action-wrapper">
-            <paper-button raised class="fancy btn btn-back" on-click="back">&lt;</paper-button>
-            <paper-button raised class="fancy btn btn-next" on-click="next">&gt;</paper-button>
+            <paper-button raised class="fancy btn btn-back" on-click="back">
+                <iron-icon icon="icons:chevron-left"></iron-icon>
+            </paper-button>
+            <paper-button raised class="fancy btn btn-next" on-click="next">
+                <iron-icon icon="icons:chevron-right"></iron-icon>
+            </paper-button>
         </div>
     </template>
 
