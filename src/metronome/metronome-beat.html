@@ -1,11 +1,11 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="./element-display.html">
+<link rel="import" href="./element-lifting.html">
 
 <dom-module id="metronome-beat">
     <template>
         <style>
-
             :host {
 
             }
@@ -31,24 +31,6 @@
                 font-size  : 34px;
                 list-style : none;
             }
-
-            .action-wrapper {
-                display         : flex;
-                flex-direction  : row;
-                justify-content : space-between;
-                width           : 100%;
-            }
-
-            .action-wrapper paper-button.fancy {
-                background-color : var(--color-fancy);
-                color            : #ffffff;
-            }
-
-            .action-wrapper paper-button.btn {
-                margin : 0;
-                width  : 48%;
-            }
-
         </style>
 
         <div class="beat-wrapper">
@@ -66,10 +48,7 @@
                 </ul>
             </element-display>
 
-            <div class="action-wrapper">
-                <paper-button raised class="fancy btn btn-back" on-click="back">&lt;</paper-button>
-                <paper-button raised class="fancy btn btn-next" on-click="next">&gt;</paper-button>
-            </div>
+            <element-lifting params="[[beats]]" param="{{beat}}"></element-lifting>
         </div>
     </template>
 
@@ -88,18 +67,6 @@
                         notify: true,
                     },
                 };
-            }
-
-            back () {
-                if (this.beat > 1) {
-                    this.beat = this.beat - 1;
-                }
-            }
-
-            next () {
-                if (this.beat < this.beats.length) {
-                    this.beat = this.beat + 1;
-                }
             }
         }
 
