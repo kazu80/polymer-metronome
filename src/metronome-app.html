@@ -37,6 +37,12 @@
                 margin : 0 20px;
             }
 
+            @media (max-width : 767px) {
+                .main-wrapper {
+                    margin : 0 3vw;
+                }
+            }
+
             .section-metronome .content-wrapper {
                 width : 30%;
             }
@@ -71,10 +77,15 @@
             }
 
             @media (max-width : 767px) {
+                .grid {
+                    margin  : 0;
+                    padding : 0;
+                }
+
                 .grid li {
-                    -webkit-flex-basis : 50%;
-                    flex-basis         : 50%;
-                    max-width          : 50%;
+                    -webkit-flex-basis : 48%;
+                    flex-basis         : 48%;
+                    max-width          : 48%;
                 }
             }
         </style>
