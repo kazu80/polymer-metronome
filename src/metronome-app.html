@@ -60,9 +60,9 @@
             }
 
             .grid {
-                @apply --layout-horizontal;
-                @apply --layout-wrap;
-                @apply --layout-justified;
+                @apply(--layout-horizontal);
+                @apply(--layout-wrap);
+                @apply(--layout-justified);
                 margin     : 0 10px 32px 10px;
                 padding    : 0;
                 list-style : none;
@@ -86,6 +86,16 @@
                     -webkit-flex-basis : 48%;
                     flex-basis         : 48%;
                     max-width          : 48%;
+                }
+            }
+
+            .width-full-mobile {
+
+            }
+
+            @media (max-width : 767px) {
+                .width-full-mobile {
+                    max-width : 100% !important;
                 }
             }
         </style>
@@ -121,7 +131,7 @@
                         <metronome-volume volume="{{volume}}" volumes="{{volumes}}"></metronome-volume>
                     </element-card>
                 </li>
-                <li>
+                <li class="width-full-mobile">
                     <element-card>
                         <metronome-play tempo="[[tempo]]" sound="[[sound]]" sounds="[[sounds]]" beat="[[beat]]" volume="[[volume]]"></metronome-play>
                     </element-card>
