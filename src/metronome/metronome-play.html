@@ -55,6 +55,10 @@
                         type : Number,
                         value: 0,
                     },
+                    sound          : {
+                        type    : Number,
+                        observer: '_observerSound',
+                    },
                 };
             }
 
@@ -114,6 +118,16 @@
                 } else {
                     this.playButtonTitle = 'PLAY';
                 }
+            }
+
+            //
+            _observerSound (latest, old) {
+                const tempoIndex = latest - 1;
+                const tempoFile = this.sounds[tempoIndex].file;
+
+                this._loadBufferFromURL (tempoFile, (buffer) => {
+                    this.initialTempo (buffer, this.volume * 0.1);
+                });
             }
 
             // Playボタンのオブザーバー

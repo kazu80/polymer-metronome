@@ -204,37 +204,6 @@
                 ];
             }
 
-            // SOUNDファイルを切り替えるために読み込みが必要
-            /*
-            _loadBufferFromURL (url, callback) {
-                const request = new XMLHttpRequest ();
-                request.open ('GET', url, true);
-                request.responseType = 'arraybuffer';
-
-                request.onload = () => {
-                    this.context.decodeAudioData (request.response,
-                                                  function (buffer) {
-                                                 if (!buffer) {
-                                                     alert ('error decoding file data: ' + url);
-                                                     return;
-                                                 }
-
-                                                 callback (buffer);
-                                             },
-                                                  function (error) {
-                                                 console.error ('decodeAudioData error', error);
-                                             }
-                    );
-                };
-
-                request.onerror = function () {
-                    alert ('BufferLoader: XHR error');
-                };
-
-                request.send ();
-            }
-            */
-
             _observerSound (latest, old) {
                 if (old) {
                     const offIndex = old - 1;
@@ -252,13 +221,6 @@
 
                 // 配列の変更通知。これをしない変更検知されない
                 this.notifySplices ('sounds', []);
-
-                // SOUNDファイルを切り替えるために読み込みが必要
-                /*
-                this._loadBufferFromURL (onFile, (buffer) => {
-                    this.initialTempo (buffer, this.volume * 0.1);
-                });
-                */
             }
 
             _observerBeat (latest, old) {
