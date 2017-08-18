@@ -4,6 +4,9 @@
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="./metronome/element-card.html">
 <link rel="import" href="./metronome/metronome-tempo.html">
 <link rel="import" href="./metronome/metronome-sound.html">
@@ -100,6 +103,15 @@
             }
         </style>
 
+        <!-- Routing -->
+        <app-location route="{{route}}"></app-location>
+        <app-route
+                route="{{route}}"
+                pattern="/:view"
+                data="{{routeData}}"
+                tail="{{subroute}}"></app-route>
+
+        <!-- -->
         <app-header reveals>
             <app-toolbar>
                 <div main-title class="main-title">
@@ -109,6 +121,14 @@
             </app-toolbar>
         </app-header>
 
+        <!-- -->
+        <iron-pages selected="[[view]]" id="pages" attr-for-selected="name" selected-attribute="visible">
+            <div name="one">One</div>
+            <div name="two">Two</div>
+            <div name="three">Three</div>
+        </iron-pages>
+
+        <!-- -->
         <main class="main-wrapper">
             <ul class="grid">
                 <li>
@@ -143,19 +163,29 @@
         class MetronomeApp extends Polymer.Element {
             static get is () { return 'metronome-app'; }
 
+            static get observers () {
+                return [
+                    '_routePageChanged(routeData.page)',
+                ];
+            }
+
             static get properties () {
                 return {
-                    tempo           : {
+                    view  : {
+                        type              : String,
+                        reflectToAttribute: true,
+                    },
+                    tempo : {
                         type : Number,
                         value: 120, // max 420
                     },
-                    sound           : {
+                    sound : {
                         type    : Number,
                         value   : 1,
                         observer: '_observerSound',
                     },
-                    sounds          : Array,
-                    beat            : {
+                    sounds: Array,
+                    beat  : {
                         type    : Number,
                         value   : 4,
                         observer: '_observerBeat',
@@ -202,6 +232,14 @@
                     {id: 8, active: false},
                     {id: 9, active: false},
                 ];
+            }
+
+            ready () {
+                super.ready ();
+            }
+
+            _routePageChanged (page) {
+                this.view = page || 'one';
             }
 
             _observerSound (latest, old) {
