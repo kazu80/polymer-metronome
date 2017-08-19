@@ -7,6 +7,7 @@
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="./metronome/element-card.html">
 <link rel="import" href="./metronome/metronome-tempo.html">
 <link rel="import" href="./metronome/metronome-sound.html">
@@ -122,13 +123,18 @@
         </app-header>
 
         <!-- -->
+        <iron-selector selected="[[view]]" attr-for-selected="name" class="drawer-list" role="navigation">
+            <a name="one" href="/">One</a>
+            <a name="two" href="/two">Two</a>
+            <a name="three" href="/three">Three</a>
+        </iron-selector>
+
+        <!-- -->
         <iron-pages selected="[[view]]" id="pages" attr-for-selected="name" selected-attribute="visible">
             <div name="one">One</div>
             <div name="two">Two</div>
             <div name="three">Three</div>
         </iron-pages>
-
-        <a href="/two">foo</a> / <a href="/three">bar</a> / <a href="/">baz</a>
 
         <!-- -->
         <main class="main-wrapper">
