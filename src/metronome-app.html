@@ -128,6 +128,8 @@
             <div name="three">Three</div>
         </iron-pages>
 
+        <a href="/two">foo</a> / <a href="/three">bar</a> / <a href="/">baz</a>
+
         <!-- -->
         <main class="main-wrapper">
             <ul class="grid">
@@ -165,7 +167,7 @@
 
             static get observers () {
                 return [
-                    '_routePageChanged(routeData.page)',
+                    '_routePageChanged(routeData.view)',
                 ];
             }
 
