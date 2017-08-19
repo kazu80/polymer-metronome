@@ -1,14 +1,6 @@
-<link rel="import" href="../bower_components/app-layout/app-layout.html">
-
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../bower_components/iron-icons/av-icons.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
-<link rel="import" href="../bower_components/app-route/app-location.html">
-<link rel="import" href="../bower_components/app-route/app-route.html">
-<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
-<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="./metronome/element-card.html">
 <link rel="import" href="./metronome/metronome-tempo.html">
 <link rel="import" href="./metronome/metronome-sound.html">
@@ -20,43 +12,6 @@
     <template>
         <style>
             :host {
-                --color-fancy : #3f51b5;
-
-                              --debug: {
-                                  border : 1px solid #888888;
-                              };
-            }
-
-            app-header {
-                color            : #ffffff;
-                background-color : #00aa88;
-            }
-
-            .main-title {
-                display        : flex;
-                align-items    : center;
-                letter-spacing : 5px;
-            }
-
-            .menu-wrapper {
-                display         : flex;
-                flex-direction  : row;
-                justify-content : space-between;
-                width           : 70px;
-            }
-
-            .menu-wrapper a {
-                color : #ffffff;
-            }
-
-            .menu-wrapper a.iron-selected {
-                color : var(--color-fancy);
-            }
-
-            @media (max-width : 767px) {
-                .menu-wrapper {
-                    width : 15vw;
-                }
             }
 
             .main-wrapper {
@@ -126,39 +81,6 @@
             }
         </style>
 
-        <!-- Routing -->
-        <app-location route="{{route}}"></app-location>
-        <app-route
-                route="{{route}}"
-                pattern="/:view"
-                data="{{routeData}}"
-                tail="{{subroute}}"></app-route>
-
-        <!-- -->
-        <app-header reveals>
-            <app-toolbar>
-                <div main-title class="main-title">
-                    METRONOME
-                    <iron-icon icon="icons:polymer"></iron-icon>
-                </div>
-                <iron-selector class="menu-wrapper" selected="[[view]]" attr-for-selected="name" class="drawer-list" role="navigation">
-                    <a name="metronome" href="/">
-                        <iron-icon icon="av:queue-music"></iron-icon>
-                    </a>
-                    <a name="profile" href="/profile">
-                        <iron-icon icon="icons:face"></iron-icon>
-                    </a>
-                </iron-selector>
-            </app-toolbar>
-        </app-header>
-
-        <!-- -->
-        <iron-pages selected="[[view]]" id="pages" attr-for-selected="name" selected-attribute="visible">
-            <div name="one">One</div>
-            <div name="two">Two</div>
-            <div name="three">Three</div>
-        </iron-pages>
-
         <!-- -->
         <main class="main-wrapper">
             <ul class="grid">
@@ -194,18 +116,8 @@
         class MetronomeApp extends Polymer.Element {
             static get is () { return 'metronome-app'; }
 
-            static get observers () {
-                return [
-                    '_routePageChanged(routeData.view)',
-                ];
-            }
-
             static get properties () {
                 return {
-                    view  : {
-                        type              : String,
-                        reflectToAttribute: true,
-                    },
                     tempo : {
                         type : Number,
                         value: 120, // max 420
@@ -267,10 +179,6 @@
 
             ready () {
                 super.ready ();
-            }
-
-            _routePageChanged (page) {
-                this.view = page || 'metronome';
             }
 
             _observerSound (latest, old) {
