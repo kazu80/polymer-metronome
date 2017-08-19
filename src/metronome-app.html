@@ -3,6 +3,7 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/iron-icons/av-icons.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
@@ -35,6 +36,27 @@
                 display        : flex;
                 align-items    : center;
                 letter-spacing : 5px;
+            }
+
+            .menu-wrapper {
+                display         : flex;
+                flex-direction  : row;
+                justify-content : space-between;
+                width           : 70px;
+            }
+
+            .menu-wrapper a {
+                color : #ffffff;
+            }
+
+            .menu-wrapper a.iron-selected {
+                color : var(--color-fancy);
+            }
+
+            @media (max-width : 767px) {
+                .menu-wrapper {
+                    width : 15vw;
+                }
             }
 
             .main-wrapper {
@@ -119,15 +141,16 @@
                     METRONOME
                     <iron-icon icon="icons:polymer"></iron-icon>
                 </div>
+                <iron-selector class="menu-wrapper" selected="[[view]]" attr-for-selected="name" class="drawer-list" role="navigation">
+                    <a name="metronome" href="/">
+                        <iron-icon icon="av:queue-music"></iron-icon>
+                    </a>
+                    <a name="profile" href="/profile">
+                        <iron-icon icon="icons:face"></iron-icon>
+                    </a>
+                </iron-selector>
             </app-toolbar>
         </app-header>
-
-        <!-- -->
-        <iron-selector selected="[[view]]" attr-for-selected="name" class="drawer-list" role="navigation">
-            <a name="one" href="/">One</a>
-            <a name="two" href="/two">Two</a>
-            <a name="three" href="/three">Three</a>
-        </iron-selector>
 
         <!-- -->
         <iron-pages selected="[[view]]" id="pages" attr-for-selected="name" selected-attribute="visible">
@@ -247,7 +270,7 @@
             }
 
             _routePageChanged (page) {
-                this.view = page || 'one';
+                this.view = page || 'metronome';
             }
 
             _observerSound (latest, old) {
