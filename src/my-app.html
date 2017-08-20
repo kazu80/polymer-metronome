@@ -18,13 +18,16 @@
                                          --debug: {
                                              border : 1px solid #888888;
                                          };
-                --margin-wrapper-main    : 0 20px;
-                --margin-wrapper-main-mb : 0 3vw;
+                --color-background       : #00aa88;
+                --margin-side            : 20px;
+                --margin-side-mb         : 3vw;
+                --margin-wrapper-main    : 0 var(--margin-side);
+                --margin-wrapper-main-mb : 0 var(--margin-side-mb);
             }
 
             app-header {
                 color            : #ffffff;
-                background-color : #00aa88;
+                background-color : var(--color-background);
             }
 
             .main-title {
