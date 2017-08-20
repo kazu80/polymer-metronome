@@ -1,0 +1,35 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<dom-module id="profile-app">
+    <template>
+        <style>
+            :host {
+
+            }
+
+            .main-wrapper {
+                margin : var(--margin-wrapper-main);
+            }
+
+            @media (max-width : 767px) {
+                .main-wrapper {
+                    margin : var(--margin-wrapper-main-mb);
+                }
+            }
+        </style>
+
+        <main class="main-wrapper">
+
+            This is profile
+
+        </main>
+    </template>
+
+    <script>
+        class ProfileApp extends Polymer.Element {
+            static get is () { return 'profile-app'; }
+        }
+
+        window.customElements.define (ProfileApp.is, ProfileApp);
+    </script>
+</dom-module>
