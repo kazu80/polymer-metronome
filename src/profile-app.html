@@ -1,4 +1,5 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/social-links/social-links.html">
 
 <dom-module id="profile-app">
     <template>
@@ -85,6 +86,27 @@
                 text-align : center;
             }
 
+            .main-wrapper .introduction-wrapper .social-wrapper {
+                margin-top : 10px;
+            }
+
+            @media (max-width : 767px) {
+                .main-wrapper .introduction-wrapper .social-wrapper {
+                    margin-top : 2vh;
+                }
+            }
+
+            .main-wrapper .introduction-wrapper .social-wrapper ul {
+                display         : flex;
+                flex-direction  : row;
+                justify-content : center;
+                margin          : 0;
+                padding         : 0;
+                list-style      : none;
+            }
+
+            .main-wrapper .introduction-wrapper .social-wrapper ul li {
+            }
         </style>
 
         <main class="main-wrapper">
@@ -96,6 +118,20 @@
 
             <div class="introduction-wrapper">
                 <div class="name">Kazuyoshi Kawakami</div>
+                <div class="social-wrapper">
+                    <ul>
+                        <li>
+                            <twitter-link href="https://www.twitter.com/@saruyama_monki" height="30px"></twitter-link>
+                        </li>
+                        <li>
+                            <facebook-link href="https://www.facebook.com/@kawakami.kazuyoshi" height="30px"></facebook-link>
+                        </li>
+                        <li>
+                            <github-link href="https://www.github.com/@monkick" height="30px"></github-link>
+                        </li>
+                    </ul>
+                </div>
+
             </div>
 
         </main>
