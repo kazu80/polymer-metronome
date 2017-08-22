@@ -4,7 +4,15 @@
     <template>
         <style>
             :host {
+                --profile-width  : 200px;
+                --profile-height : 200px;
+            }
 
+            @media (max-width : 767px) {
+                :host {
+                    --profile-width  : 40vw;
+                    --profile-height : 40vw;
+                }
             }
 
             .main-wrapper {
@@ -48,11 +56,11 @@
 
             .profile {
                 position            : absolute;
-                bottom              : -100px;
+                bottom              : calc(var(--profile-height) / 2 * -1);
                 left                : 50%;
                 transform           : translateX(-50%);
-                width               : 200px;
-                height              : 200px;
+                width               : var(--profile-width);
+                height              : var(--profile-height);
                 border-radius       : 50%;
                 border              : 5px solid #ffffff;
                 background-image    : url('../images/profile_2.jpg');
@@ -61,12 +69,20 @@
                 background-repeat   : no-repeat;
             }
 
+            .main-wrapper .introduction-wrapper {
+                padding-top : calc(var(--profile-height) / 2 + 15px);
+                font-size   : 32px;
+            }
+
             @media (max-width : 767px) {
-                .profile {
-                    bottom : -20vw;
-                    width  : 40vw;
-                    height : 40vw;
+                .main-wrapper .introduction-wrapper {
+                    padding-top : calc(var(--profile-height) / 2 + 2vh);
+                    font-size   : 8vw;
                 }
+            }
+
+            .main-wrapper .introduction-wrapper .name {
+                text-align : center;
             }
 
         </style>
@@ -78,7 +94,9 @@
                 <div class="profile"></div>
             </div>
 
-            This is profile
+            <div class="introduction-wrapper">
+                <div class="name">Kazuyoshi Kawakami</div>
+            </div>
 
         </main>
     </template>
