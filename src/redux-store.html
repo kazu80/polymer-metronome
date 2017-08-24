@@ -1,0 +1,23 @@
+<link rel="import" href="../bower_components/polymer-redux/polymer-redux.html">
+
+<script>
+    /* eslint-disable no-undef,new-cap */
+
+    const initialState = {
+        tempo: 100,
+    };
+
+    const reducer = (state, action) => {
+        if (!state) {
+            return initialState;
+        }
+        switch (action.type) {
+            case 'UPDATE_TEMPO': {
+                return Object.assign ({}, state, {tempo: action.tempo});
+            }
+        }
+    };
+
+    const store = Redux.createStore (reducer);
+    ReduxBehavior = PolymerRedux (store);
+</script>

@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/iron-icons/maps-icons.html">
+<link rel="import" href="../redux-store.html">
 <link rel="import" href="./element-display.html">
 
 <dom-module id="metronome-play">
@@ -31,7 +32,7 @@
 
     </template>
     <script>
-        class MetronomePlay extends Polymer.Element {
+        class MetronomePlay extends ReduxBehavior (Polymer.Element) {
             static get is () { return 'metronome-play'; }
 
             static get properties () {
@@ -58,6 +59,10 @@
                     sound          : {
                         type    : Number,
                         observer: '_observerSound',
+                    },
+                    tempo          : {
+                        type     : Number,
+                        statePath: 'tempo',
                     },
                 };
             }

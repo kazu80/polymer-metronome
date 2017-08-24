@@ -21,7 +21,8 @@
     "paper-slider": "PolymerElements/paper-slider#^2.0.2",
     "iron-icon": "PolymerElements/iron-icon#^2.0.1",
     "iron-meta": "PolymerElements/iron-meta#^2.0.2",
-    "social-links": "convoo/social-links#^0.0.2"
+    "social-links": "convoo/social-links#^0.0.2",
+    "polymer-redux": "^1.0.2"
   },
   "resolutions": {
     "polymer": "^2.0.0"

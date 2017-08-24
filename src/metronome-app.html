@@ -81,7 +81,6 @@
             }
         </style>
 
-        <!-- -->
         <main class="main-wrapper">
             <ul class="grid">
                 <li>
@@ -106,7 +105,7 @@
                 </li>
                 <li class="width-full-mobile">
                     <element-card>
-                        <metronome-play tempo="[[tempo]]" sound="[[sound]]" sounds="[[sounds]]" beat="[[beat]]" volume="[[volume]]"></metronome-play>
+                        <metronome-play sound="[[sound]]" sounds="[[sounds]]" beat="[[beat]]" volume="[[volume]]"></metronome-play>
                     </element-card>
                 </li>
             </ul>
@@ -118,10 +117,6 @@
 
             static get properties () {
                 return {
-                    tempo : {
-                        type : Number,
-                        value: 120, // max 420
-                    },
                     sound : {
                         type    : Number,
                         value   : 1,

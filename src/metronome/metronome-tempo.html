@@ -2,6 +2,7 @@
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/paper-slider/paper-slider.html">
 <link rel="import" href="../../bower_components/paper-progress/paper-progress.html">
+<link rel="import" href="../redux-store.html">
 <link rel="import" href="./element-display.html">
 
 <dom-module id="metronome-tempo">
@@ -57,16 +58,31 @@
         </div>
     </template>
     <script>
-        class MetronomeTempo extends Polymer.Element {
+        class MetronomeTempo extends ReduxBehavior (Polymer.Element) {
             static get is () { return 'metronome-tempo'; }
 
             static get properties () {
                 return {
                     tempo: {
-                        type  : Number,
-                        notify: true,
+                        type     : Number,
+                        value    : 120,
+                        statePath: 'tempo',
+                        observer : '_observerTempo',
                     },
                 };
+            }
+
+            _observerTempo (latest, old) {
+                this.dispatch (
+                    {
+                        type : 'UPDATE_TEMPO',
+                        tempo: latest,
+                    }
+                );
+            }
+
+            connectedCallback () {
+                super.connectedCallback ();
             }
 
             constructor () {
