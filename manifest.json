@@ -1,8 +1,8 @@
 {
-  "name": "My App",
-  "short_name": "My App",
-  "description": "My App description",
-  "start_url": "./?homescreen=1",
+  "name": "METRONOME",
+  "short_name": "METRONOME",
+  "description": "Metronome on web.",
+  "start_url": "/?homescreen=1",
   "display": "standalone",
   "theme_color": "#3f51b5",
   "background_color": "#3f51b5",
