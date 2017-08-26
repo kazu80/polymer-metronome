@@ -90,7 +90,7 @@
                 </li>
                 <li>
                     <element-card>
-                        <metronome-beat beat="{{beat}}" beats="{{beats}}"></metronome-beat>
+                        <metronome-beat></metronome-beat>
                     </element-card>
                 </li>
                 <li>
@@ -105,7 +105,7 @@
                 </li>
                 <li class="width-full-mobile">
                     <element-card>
-                        <metronome-play sound="[[sound]]" sounds="[[sounds]]" beat="[[beat]]" volume="[[volume]]"></metronome-play>
+                        <metronome-play sound="[[sound]]" sounds="[[sounds]]" volume="[[volume]]"></metronome-play>
                     </element-card>
                 </li>
             </ul>
@@ -123,12 +123,6 @@
                         observer: '_observerSound',
                     },
                     sounds: Array,
-                    beat  : {
-                        type    : Number,
-                        value   : 4,
-                        observer: '_observerBeat',
-                    },
-                    beats           : Array,
                     volume          : {
                         type    : Number,
                         value   : 5,
@@ -146,17 +140,6 @@
                     {id: 2, file: '../../sound/s_02.mp3', active: false},
                     {id: 3, file: '../../sound/s_03.mp3', active: false},
                     {id: 4, file: '../../sound/s_04.mp3', active: false},
-                ];
-
-                this.beats = [
-                    {id: 1, active: false},
-                    {id: 2, active: false},
-                    {id: 3, active: false},
-                    {id: 4, active: false},
-                    {id: 5, active: false},
-                    {id: 6, active: false},
-                    {id: 7, active: false},
-                    {id: 8, active: false},
                 ];
 
                 this.volumes = [
@@ -193,23 +176,6 @@
 
                 // 配列の変更通知。これをしない変更検知されない
                 this.notifySplices ('sounds', []);
-            }
-
-            _observerBeat (latest, old) {
-                if (old) {
-                    const offIndex = old - 1;
-
-                    // パラメーターの変更
-                    this.beats.splice (offIndex, 1, {id: old, active: false});
-                }
-
-                const onIndex = latest - 1;
-
-                // パラメーターの変更
-                this.beats.splice (onIndex, 1, {id: latest, active: true});
-
-                // 配列の変更通知。これをしない変更検知されない
-                this.notifySplices ('beats', []);
             }
 
             _observerVolume (latest, old) {
