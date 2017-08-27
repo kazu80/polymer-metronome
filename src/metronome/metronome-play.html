@@ -45,7 +45,7 @@
                     soundGainTempo  : Object,
                     soundGainBeat   : Object,
 
-                    isPlay  : {
+                    isPlay         : {
                         type    : Boolean,
                         value   : false,
                         observer: '_observerPlay',
@@ -54,23 +54,29 @@
                         type : String,
                         value: 'PLAY',
                     },
-                    interval: {
+                    interval       : {
                         type : Number,
                         value: 0,
                     },
-                    sound   : {
-                        type    : Number,
-                        observer: '_observerSound',
+                    soundFileTempo : {
+                        type     : String,
+                        statePath: 'soundFileTempo',
+                        observer : '_observerSoundFileTempo',
                     },
-                    tempo   : {
+                    soundFileBeat  : {
+                        type     : String,
+                        statePath: 'soundFileBeat',
+                        observer : '_observerSoundFileBeat',
+                    },
+                    tempo          : {
                         type     : Number,
                         statePath: 'tempo',
                     },
-                    beat    : {
+                    beat           : {
                         type     : Number,
                         statePath: 'beat',
                     },
-                    volume  : {
+                    volume         : {
                         type     : Number,
                         statePath: 'volume',
                     },
@@ -85,14 +91,6 @@
 
             ready () {
                 super.ready ();
-
-                this._loadBufferFromURL (this.sounds[0].file, (buffer) => {
-                    this.initialTempo (buffer, this.volume * 0.1);
-                });
-
-                this._loadBufferFromURL (this.sounds[1].file, (buffer) => {
-                    this.initialBeat (buffer, this.volume * 0.1);
-                });
             }
 
             initialTempo (buffer, gain) {
@@ -136,12 +134,16 @@
             }
 
             //
-            _observerSound (latest, old) {
-                const tempoIndex = latest - 1;
-                const tempoFile = this.sounds[tempoIndex].file;
-
-                this._loadBufferFromURL (tempoFile, (buffer) => {
+            _observerSoundFileTempo (latest, old) {
+                this._loadBufferFromURL (latest, (buffer) => {
                     this.initialTempo (buffer, this.volume * 0.1);
+                });
+            }
+
+            //
+            _observerSoundFileBeat (latest, old) {
+                this._loadBufferFromURL (latest, (buffer) => {
+                    this.initialBeat (buffer, this.volume * 0.1);
                 });
             }
 

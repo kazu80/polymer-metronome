@@ -1,6 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
-
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../redux-store.html">
 <link rel="import" href="./element-display.html">
 <link rel="import" href="./element-lifting.html">
 
@@ -62,20 +62,59 @@
         </div>
     </template>
     <script>
-        class MetronomeSound extends Polymer.Element {
+        /* eslint-disable new-cap,no-undef */
+
+        class MetronomeSound extends ReduxBehavior (Polymer.Element) {
             static get is () { return 'metronome-sound'; }
 
             static get properties () {
                 return {
                     sound     : {
-                        type  : Number,
-                        notify: true,
+                        type    : Number,
+                        value   : 1,
+                        observer: '_observerSound',
+                    },
+                    sounds    : {
+                        type : Array,
+                        value: [
+                            {id: 1, file: '../../sound/s_01.mp3', active: false},
+                            {id: 2, file: '../../sound/s_02.mp3', active: false},
+                            {id: 3, file: '../../sound/s_03.mp3', active: false},
+                            {id: 4, file: '../../sound/s_04.mp3', active: false},
+                        ],
                     },
                 };
             }
 
             constructor () {
                 super ();
+            }
+
+            _observerSound (latest, old) {
+                if (old) {
+                    const offIndex = old - 1;
+                    const offFile = this.sounds[offIndex].file;
+
+                    // パラメーターの変更
+                    this.sounds.splice (offIndex, 1, {id: old, file: offFile, active: false});
+                }
+
+                const onIndex = latest - 1;
+                const onFile = this.sounds[onIndex].file;
+
+                // パラメーターの変更
+                this.sounds.splice (onIndex, 1, {id: latest, file: onFile, active: true});
+
+                // 配列の変更通知。これをしない変更検知されない
+                this.notifySplices ('sounds', []);
+
+                // Redux
+                this.dispatch (
+                    {
+                        type          : 'UPDATE_SOUND_FILE_TEMPO',
+                        soundFileTempo: onFile,
+                    }
+                );
             }
         }
 

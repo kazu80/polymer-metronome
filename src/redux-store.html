@@ -4,9 +4,11 @@
     /* eslint-disable no-undef,new-cap */
 
     const initialState = {
-        tempo : 100,
-        beat  : 4,
-        volume: 5,
+        tempo         : 100,
+        beat          : 4,
+        volume        : 5,
+        soundFileTempo: '../../sound/s_01.mp3',
+        soundFileBeat : '../../sound/s_02.mp3',
     };
 
     const reducer = (state, action) => {
@@ -22,6 +24,9 @@
             }
             case 'UPDATE_VOLUME': {
                 return Object.assign ({}, state, {volume: action.volume});
+            }
+            case 'UPDATE_SOUND_FILE_TEMPO': {
+                return Object.assign ({}, state, {soundFileTempo: action.soundFileTempo});
             }
         }
     };

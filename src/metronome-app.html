@@ -95,7 +95,7 @@
                 </li>
                 <li>
                     <element-card>
-                        <metronome-sound sound="{{sound}}" sounds="{{sounds}}"></metronome-sound>
+                        <metronome-sound></metronome-sound>
                     </element-card>
                 </li>
                 <li>
@@ -105,7 +105,7 @@
                 </li>
                 <li class="width-full-mobile">
                     <element-card>
-                        <metronome-play sound="[[sound]]" sounds="[[sounds]]"></metronome-play>
+                        <metronome-play></metronome-play>
                     </element-card>
                 </li>
             </ul>
@@ -116,48 +116,15 @@
             static get is () { return 'metronome-app'; }
 
             static get properties () {
-                return {
-                    sound : {
-                        type    : Number,
-                        value   : 1,
-                        observer: '_observerSound',
-                    },
-                    sounds: Array,
-                };
+                return {};
             }
 
             constructor () {
                 super ();
-
-                this.sounds = [
-                    {id: 1, file: '../../sound/s_01.mp3', active: false},
-                    {id: 2, file: '../../sound/s_02.mp3', active: false},
-                    {id: 3, file: '../../sound/s_03.mp3', active: false},
-                    {id: 4, file: '../../sound/s_04.mp3', active: false},
-                ];
             }
 
             ready () {
                 super.ready ();
-            }
-
-            _observerSound (latest, old) {
-                if (old) {
-                    const offIndex = old - 1;
-                    const offFile = this.sounds[offIndex].file;
-
-                    // パラメーターの変更
-                    this.sounds.splice (offIndex, 1, {id: old, file: offFile, active: false});
-                }
-
-                const onIndex = latest - 1;
-                const onFile = this.sounds[onIndex].file;
-
-                // パラメーターの変更
-                this.sounds.splice (onIndex, 1, {id: latest, file: onFile, active: true});
-
-                // 配列の変更通知。これをしない変更検知されない
-                this.notifySplices ('sounds', []);
             }
         }
 
