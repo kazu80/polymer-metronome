@@ -100,12 +100,12 @@
                 </li>
                 <li>
                     <element-card>
-                        <metronome-volume volume="{{volume}}" volumes="{{volumes}}"></metronome-volume>
+                        <metronome-volume></metronome-volume>
                     </element-card>
                 </li>
                 <li class="width-full-mobile">
                     <element-card>
-                        <metronome-play sound="[[sound]]" sounds="[[sounds]]" volume="[[volume]]"></metronome-play>
+                        <metronome-play sound="[[sound]]" sounds="[[sounds]]"></metronome-play>
                     </element-card>
                 </li>
             </ul>
@@ -123,12 +123,6 @@
                         observer: '_observerSound',
                     },
                     sounds: Array,
-                    volume          : {
-                        type    : Number,
-                        value   : 5,
-                        observer: '_observerVolume',
-                    },
-                    volumes         : Array,
                 };
             }
 
@@ -140,18 +134,6 @@
                     {id: 2, file: '../../sound/s_02.mp3', active: false},
                     {id: 3, file: '../../sound/s_03.mp3', active: false},
                     {id: 4, file: '../../sound/s_04.mp3', active: false},
-                ];
-
-                this.volumes = [
-                    {id: 1, active: false},
-                    {id: 2, active: false},
-                    {id: 3, active: false},
-                    {id: 4, active: false},
-                    {id: 5, active: false},
-                    {id: 6, active: false},
-                    {id: 7, active: false},
-                    {id: 8, active: false},
-                    {id: 9, active: false},
                 ];
             }
 
@@ -176,31 +158,6 @@
 
                 // 配列の変更通知。これをしない変更検知されない
                 this.notifySplices ('sounds', []);
-            }
-
-            _observerVolume (latest, old) {
-                if (old) {
-                    const offIndex = old - 1;
-
-                    // パラメーターの変更
-                    this.volumes.splice (offIndex, 1, {id: old, active: false});
-                }
-
-                const onIndex = latest - 1;
-
-                // パラメーターの変更
-                this.volumes.splice (onIndex, 1, {id: latest, active: true});
-
-                // 配列の変更通知。これをしない変更検知されない
-                this.notifySplices ('volumes', []);
-
-                // Volumeの更新
-                if (this.soundGainTempo) {
-                    this.soundGainTempo.gain.value = latest * 0.1;
-                }
-                if (this.soundGainBeat) {
-                    this.soundGainBeat.gain.value = latest * 0.1;
-                }
             }
         }
 

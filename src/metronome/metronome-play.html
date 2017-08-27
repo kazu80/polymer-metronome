@@ -32,6 +32,8 @@
 
     </template>
     <script>
+        /* eslint-disable new-cap,no-undef */
+
         class MetronomePlay extends ReduxBehavior (Polymer.Element) {
             static get is () { return 'metronome-play'; }
 
@@ -43,7 +45,7 @@
                     soundGainTempo  : Object,
                     soundGainBeat   : Object,
 
-                    isPlay         : {
+                    isPlay  : {
                         type    : Boolean,
                         value   : false,
                         observer: '_observerPlay',
@@ -52,21 +54,25 @@
                         type : String,
                         value: 'PLAY',
                     },
-                    interval       : {
+                    interval: {
                         type : Number,
                         value: 0,
                     },
-                    sound          : {
+                    sound   : {
                         type    : Number,
                         observer: '_observerSound',
                     },
-                    tempo          : {
+                    tempo   : {
                         type     : Number,
                         statePath: 'tempo',
                     },
-                    beat           : {
+                    beat    : {
                         type     : Number,
                         statePath: 'beat',
+                    },
+                    volume  : {
+                        type     : Number,
+                        statePath: 'volume',
                     },
                 };
             }
