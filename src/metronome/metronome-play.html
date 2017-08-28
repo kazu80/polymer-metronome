@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/iron-icons/maps-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/av-icons.html">
 <link rel="import" href="../redux-store.html">
 <link rel="import" href="./element-display.html">
 
@@ -26,7 +27,12 @@
 
         <div class="action-wrapper">
             <paper-button raised class="fancy btn btn-play" on-click="play">
-                [[playButtonTitle]]
+                <template is="dom-if" if="{{isPlay}}">
+                    <iron-icon icon="av:stop"></iron-icon>
+                </template>
+                <template is="dom-if" if="{{!isPlay}}">
+                    <iron-icon icon="av:av:play-arrow"></iron-icon>
+                </template>
             </paper-button>
         </div>
 
