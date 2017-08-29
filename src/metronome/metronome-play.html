@@ -26,7 +26,7 @@
         </style>
 
         <div class="action-wrapper">
-            <paper-button raised class="fancy btn btn-play" on-click="play">
+            <paper-button id="playButton" raised class="fancy btn btn-play" on-click="play">
                 <template is="dom-if" if="{{isPlay}}">
                     <iron-icon icon="av:stop"></iron-icon>
                 </template>
@@ -69,23 +69,24 @@
                         statePath: 'soundFileTempo',
                         observer : '_observerSoundFileTempo',
                     },
-                    soundFileBeat  : {
+                    soundFileBeat : {
                         type     : String,
                         statePath: 'soundFileBeat',
                         observer : '_observerSoundFileBeat',
                     },
-                    tempo          : {
+                    tempo         : {
                         type     : Number,
                         statePath: 'tempo',
                     },
-                    beat           : {
+                    beat          : {
                         type     : Number,
                         statePath: 'beat',
                     },
-                    volume         : {
+                    volume        : {
                         type     : Number,
                         statePath: 'volume',
                     },
+                    animationTempo: Object,
                 };
             }
 
@@ -97,6 +98,12 @@
 
             ready () {
                 super.ready ();
+
+                // set animation
+                this.animationTempo = this.$.playButton.animate (
+                    {transform: ['scale(1.1, 1.1)', 'scale(1.0, 1.0)']},
+                    {duration: 100}
+                );
             }
 
             initialTempo (buffer, gain) {
@@ -153,13 +160,24 @@
                     let count = 0;
 
                     this.interval = setInterval (() => {
+                        //
                         count % this.beat === 0 ? this._playBeat () : this._playTempo ();
+
+                        // animation execute
+                        this.animationTempo.play ();
+
                         count++;
                     }, 60 * 1000 / this.tempo);
                 } else {
                     if (this.interval) {
+                        //
                         clearInterval (this.interval);
+
+                        //
                         this.interval = 0;
+
+                        // animation stop
+                        this.animationTempo.cancel ();
                     }
                 }
             }
