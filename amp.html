@@ -16,11 +16,93 @@
           "logo.jpg"
         ]
       }
-
     </script>
     <style amp-boilerplate>body{-webkit-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-moz-animation:-amp-start 8s steps(1,end) 0s 1 normal both;-ms-animation:-amp-start 8s steps(1,end) 0s 1 normal both;animation:-amp-start 8s steps(1,end) 0s 1 normal both}@-webkit-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-moz-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-ms-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@-o-keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}@keyframes -amp-start{from{visibility:hidden}to{visibility:visible}}</style><noscript><style amp-boilerplate>body{-webkit-animation:none;-moz-animation:none;-ms-animation:none;animation:none}</style></noscript>
+    <style amp-custom>
+        :host {
+            --profile-width  : 200px;
+            --profile-height : 200px;
+        }
+
+        @media (max-width : 767px) {
+            :host {
+                --profile-width  : 40vw;
+                --profile-height : 40vw;
+            }
+        }
+
+        .main-wrapper {
+            margin : 0 20px;
+        }
+
+        @media (max-width : 767px) {
+            .main-wrapper {
+                margin : 3vw;
+            }
+        }
+
+        .profile-wrapper {
+            position         : relative;
+            margin-left      : -20px;
+            margin-right     : -20px;
+            background-color : #00aa88;
+            height           : 300px;
+        }
+
+        @media (max-width : 767px) {
+            .profile-wrapper {
+                margin-left  : -3vw;
+                margin-right : -3vw;
+                height       : 25vh;
+            }
+        }
+
+        .color-wall {
+            position            : absolute;
+            top                 : 0;
+            left                : 0;
+            width               : 100%;
+            height              : 100%;
+            background-image    : url('./images/profile_1.jpg');
+            background-size     : cover;
+            background-position : center;
+            background-repeat   : no-repeat;
+            filter              : blur(3px) opacity(75%) grayscale(75%);
+        }
+
+        .profile {
+            position            : absolute;
+            bottom              : calc(200px / 2 * -1);
+            left                : 50%;
+            transform           : translateX(-50%);
+            width               : 200px;
+            height              : 200px;
+            border-radius       : 50%;
+            border              : 5px solid #ffffff;
+            background-image    : url('./images/profile_2.jpg');
+            background-size     : cover;
+            background-position : center;
+            background-repeat   : no-repeat;
+        }
+
+        @media (max-width : 767px) {
+            .profile {
+                bottom : calc(40vw / 2 * -1);
+                width  : 40vw;
+                height : 40vw;
+            }
+        }
+
+    </style>
 </head>
 <body>
-<h1>Welcome to the mobile web</h1>
+<main class="main-wrapper">
+    <h1>Polymer Metronome</h1>
+    <div class="profile-wrapper">
+        <div class="color-wall"></div>
+        <div class="profile"></div>
+    </div>
+</main>
+
 </body>
 </html>
