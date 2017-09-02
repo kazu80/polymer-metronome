@@ -41,6 +41,7 @@
             }
         }
 
+        .link-wrapper,
         .profile-wrapper {
             position         : relative;
             margin-left      : -20px;
@@ -50,6 +51,7 @@
         }
 
         @media (max-width : 767px) {
+            .link-wrapper,
             .profile-wrapper {
                 margin-left  : -3vw;
                 margin-right : -3vw;
@@ -93,6 +95,18 @@
             }
         }
 
+        .link-wrapper {
+            padding-top: 120px;
+            text-align: center;
+            background-color : transparent;
+        }
+
+        @media (max-width : 767px) {
+            .link-wrapper {
+                padding-top: 22px;
+            }
+        }
+
     </style>
 </head>
 <body>
@@ -101,6 +115,10 @@
     <div class="profile-wrapper">
         <div class="color-wall"></div>
         <div class="profile"></div>
+    </div>
+
+    <div class="link-wrapper">
+        <a href="/">metronome</a>
     </div>
 </main>
 
