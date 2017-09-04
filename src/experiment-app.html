@@ -1,0 +1,32 @@
+<link rel="import" href="../bower_components/polymer/polymer-element.html">
+
+<dom-module id="experiment-app">
+    <template>
+        <style>
+            :host {
+            }
+
+            .main-wrapper {
+                margin : var(--margin-wrapper-main);
+            }
+
+            @media (max-width : 767px) {
+                .main-wrapper {
+                    margin : var(--margin-wrapper-main-mb);
+                }
+            }
+        </style>
+
+        <main class="main-wrapper">
+
+
+        </main>
+    </template>
+    <script>
+        class ExperimentApp extends Polymer.Element {
+            static get is () { return 'experiment-app'; }
+        }
+
+        window.customElements.define (ExperimentApp.is, ExperimentApp);
+    </script>
+</dom-module>

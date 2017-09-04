@@ -1,0 +1,21 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+
+<dom-module id="upload-split">
+    <template>
+        <style>
+            :host {
+            }
+        </style>
+
+        <input type="file" name="file" id="file">
+        <button type="button" id="btn">upload</button>
+
+    </template>
+    <script>
+        class UploadSplit extends Polymer.Element {
+            static get is () { return 'upload-split'; }
+        }
+
+        window.customElements.define (UploadSplit.is, UploadSplit);
+    </script>
+</dom-module>

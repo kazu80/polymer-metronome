@@ -8,6 +8,7 @@
 <link rel="import" href="../bower_components/iron-icons/av-icons.html">
 <link rel="import" href="./metronome-app.html">
 <link rel="import" href="./profile-app.html">
+<link rel="import" href="./experiment-app.html">
 <link rel="lazy-import" href="my-view404.html">
 
 <dom-module id="my-app">
@@ -40,7 +41,7 @@
                 display         : flex;
                 flex-direction  : row;
                 justify-content : space-between;
-                width           : 70px;
+                width           : 100px;
             }
 
             .menu-wrapper a {
@@ -53,7 +54,7 @@
 
             @media (max-width : 767px) {
                 .menu-wrapper {
-                    width : 15vw;
+                    width : 25vw;
                 }
             }
 
@@ -89,6 +90,9 @@
                     <a name="profile" href="[[rootPath]]profile">
                         <iron-icon icon="icons:face"></iron-icon>
                     </a>
+                    <a name="experiment" href="[[rootPath]]experiment">
+                        <iron-icon icon="icons:build"></iron-icon>
+                    </a>
                 </iron-selector>
             </app-toolbar>
         </app-header>
@@ -97,6 +101,7 @@
         <iron-pages selected="[[view]]" id="pages" attr-for-selected="name" selected-attribute="visible" fallback-selection="view404">
             <metronome-app name="metronome"></metronome-app>
             <profile-app name="profile"></profile-app>
+            <experiment-app name="experiment"></experiment-app>
             <my-view404 name="view404"></my-view404>
         </iron-pages>
     </template>
