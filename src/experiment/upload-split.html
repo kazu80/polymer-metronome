@@ -1,4 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
 
 <dom-module id="upload-split">
     <template>
@@ -8,12 +9,103 @@
         </style>
 
         <input type="file" name="file" id="file">
-        <button type="button" id="btn">upload</button>
+        <button type="button" id="btn" on-click="uploadButtonClick">upload</button>
+
+        <iron-ajax
+                id="ajax"
+                url=[[url]]
+                method=[[method]]
+                headers=[[headers]]
+                contentType=[[contentType]]
+                body=[[body]]
+                on-response="handleResponse"
+                debounce-duration="300"></iron-ajax>
 
     </template>
     <script>
         class UploadSplit extends Polymer.Element {
             static get is () { return 'upload-split'; }
+
+            static get properties () {
+                return {
+                    url        : {
+                        type : String,
+                        value: '',
+                    },
+                    method     : {
+                        type : String,
+                        value: '',
+                    },
+                    headers    : {
+                        type : String,
+                        value: '',
+                    },
+                    contentType: {
+                        type : String,
+                        value: '',
+                    },
+                    body       : {
+                        type : Blob,
+                        value: null,
+                    },
+                };
+            }
+
+            uploadButtonClick () {
+                this.readBlob ();
+            }
+
+            readBlob (chunkSize) {
+                chunkSize = chunkSize || 1024 * 1000 * 5;
+
+                const files = this.$.file.files;
+
+                if (files.length < 1) {
+                    console.log ('not find file');
+                    return false;
+                }
+
+                const file = files[0];
+
+                // count of repeat
+                const chunks = Math.ceil (file.size / chunkSize);
+
+                for (let i = 0; i < chunks; i++) {
+                    this.chunk (file, i, chunks, chunkSize);
+                }
+            }
+
+            chunk (file, i, chunks, chunkSize) {
+                const reader = new FileReader ();
+
+                const start = i * chunkSize;
+                const stop = start + chunkSize;
+
+                const blob = file.slice (start, stop);
+
+                reader.onloadend = (evt) => {
+                    if (evt.target.readyState === FileReader.DONE) {
+                        const blob = evt.target.result;
+                        (this.upload (blob, i, chunks - 1));
+                    }
+                };
+                reader.readAsArrayBuffer (blob);
+            }
+
+            upload (blob, id, maxId) {
+                this.url = 'http://localhost:8000/api/fileupload';
+                this.method = 'POST';
+                this.headers = `{'Chunk-Id': ${id},'Chunk-Max-Id': ${maxId}}`;
+                this.contentType = 'application/octet-stream';
+
+                // this.body = blob;
+
+                this.$.ajax.generateRequest ();
+            }
+
+            handleResponse (res) {
+                console.log ('response');
+            }
         }
 
         window.customElements.define (UploadSplit.is, UploadSplit);
