@@ -37,7 +37,7 @@
                         value: '',
                     },
                     headers    : {
-                        type : String,
+                        type : Object,
                         value: '',
                     },
                     contentType: {
@@ -95,7 +95,10 @@
             upload (blob, id, maxId) {
                 this.url = 'http://localhost:8000/api/fileupload';
                 this.method = 'POST';
-                this.headers = `{'Chunk-Id': ${id},'Chunk-Max-Id': ${maxId}}`;
+                this.headers = {
+                    'Chunk-Id'    : id,
+                    'Chunk-Max-Id': maxId,
+                };
                 this.contentType = 'application/octet-stream';
 
                 // this.body = blob;
