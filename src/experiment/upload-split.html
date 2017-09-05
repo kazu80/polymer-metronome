@@ -16,7 +16,7 @@
                 url=[[url]]
                 method=[[method]]
                 headers=[[headers]]
-                contentType=[[contentType]]
+                content-type=[[contentType]]
                 body=[[body]]
                 on-response="handleResponse"
                 debounce-duration="300"></iron-ajax>
@@ -101,7 +101,7 @@
                 };
                 this.contentType = 'application/octet-stream';
 
-                // this.body = blob;
+                this.body = blob;
 
                 this.$.ajax.generateRequest ();
             }
