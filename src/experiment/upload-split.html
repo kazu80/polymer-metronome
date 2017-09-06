@@ -48,6 +48,22 @@
                         type : Blob,
                         value: null,
                     },
+                    mime       : {
+                        type : String,
+                        value: null,
+                    },
+                    extention  : {
+                        type : String,
+                        value: null,
+                    },
+                    filename   : {
+                        type : String,
+                        value: null,
+                    },
+                    fileSize   : {
+                        type : Number,
+                        value: 0,
+                    },
                 };
             }
 
@@ -66,6 +82,10 @@
                 }
 
                 const file = files[0];
+                this.mime = file['type'];
+                this.filename = file['name'];
+                this.fileSize = file['size'];
+                this.extension = UploadSplit.getExtensionFromFileName (this.filename);
 
                 // count of repeat
                 const chunks = Math.ceil (file.size / chunkSize);
@@ -96,8 +116,10 @@
                 this.url = 'http://localhost:8000/api/fileupload';
                 this.method = 'POST';
                 this.headers = {
-                    'Chunk-Id'    : id,
-                    'Chunk-Max-Id': maxId,
+                    'Chunk-Id'      : id,
+                    'Chunk-Max-Id'  : maxId,
+                    'FILE-MIME'     : this.mime,
+                    'FILE-EXTENSION': this.extension,
                 };
                 this.contentType = 'application/octet-stream';
 
@@ -108,6 +130,11 @@
 
             handleResponse (res) {
                 console.log ('response');
+            }
+
+            static getExtensionFromFileName (fileName) {
+                const re = /(?:\.([^.]+))?$/;
+                return re.exec (fileName)[1];
             }
         }
 
