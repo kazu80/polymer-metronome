@@ -8,6 +8,8 @@
             }
         </style>
 
+        [[sendCount]] / [[sendMaxCount]]<br>
+
         <input type="file" name="file" id="file">
         <button type="button" id="btn" on-click="uploadButtonClick">upload</button>
 
@@ -48,19 +50,27 @@
                         type : Blob,
                         value: null,
                     },
-                    mime       : {
+                    mime        : {
                         type : String,
                         value: null,
                     },
-                    extention  : {
+                    extention   : {
                         type : String,
                         value: null,
                     },
-                    filename   : {
+                    filename    : {
                         type : String,
                         value: null,
                     },
-                    fileSize   : {
+                    fileSize    : {
+                        type : Number,
+                        value: 0,
+                    },
+                    sendCount   : {
+                        type : Number,
+                        value: 0,
+                    },
+                    sendMaxCount: {
                         type : Number,
                         value: 0,
                     },
@@ -68,7 +78,14 @@
             }
 
             uploadButtonClick () {
-                this.readBlob ();
+                if (this.sendCount === this.sendMaxCount) {
+                    // reset count
+                    this.sendCount = 0;
+                    this.sendMaxCount = 0;
+
+                    // execute
+                    this.readBlob ();
+                }
             }
 
             readBlob (chunkSize) {
@@ -89,6 +106,7 @@
 
                 // count of repeat
                 const chunks = Math.ceil (file.size / chunkSize);
+                this.sendMaxCount = chunks;
 
                 for (let i = 0; i < chunks; i++) {
                     this.chunk (file, i, chunks, chunkSize);
@@ -129,7 +147,9 @@
             }
 
             handleResponse (res) {
-                console.log ('response');
+                console.log (res);
+
+                this.sendCount++;
             }
 
             static getExtensionFromFileName (fileName) {
