@@ -8,7 +8,7 @@
             }
         </style>
 
-        [[sendCount]] / [[sendMaxCount]]<br>
+        [[sendCount]] / [[sendCountMax]]<br>
 
         <input type="file" name="file" id="file">
         <button type="button" id="btn" on-click="uploadButtonClick">upload</button>
@@ -20,6 +20,7 @@
                 headers=[[headers]]
                 content-type=[[contentType]]
                 body=[[body]]
+                on-change="changeFile"
                 on-response="handleResponse"
                 debounce-duration="300"></iron-ajax>
 
@@ -30,11 +31,11 @@
 
             static get properties () {
                 return {
-                    url        : {
+                    url         : {
                         type : String,
                         value: '',
                     },
-                    method     : {
+                    method      : {
                         type : String,
                         value: '',
                     },
@@ -67,21 +68,23 @@
                         value: 0,
                     },
                     sendCount   : {
-                        type : Number,
-                        value: 0,
+                        type  : Number,
+                        value : 0,
+                        notify: true,
                     },
-                    sendMaxCount: {
-                        type : Number,
-                        value: 0,
+                    sendCountMax: {
+                        type  : Number,
+                        value : 0,
+                        notify: true,
                     },
                 };
             }
 
             uploadButtonClick () {
-                if (this.sendCount === this.sendMaxCount) {
+                if (this.sendCount === this.sendCountMax) {
                     // reset count
                     this.sendCount = 0;
-                    this.sendMaxCount = 0;
+                    this.sendCountMax = 0;
 
                     // execute
                     this.readBlob ();
@@ -106,7 +109,7 @@
 
                 // count of repeat
                 const chunks = Math.ceil (file.size / chunkSize);
-                this.sendMaxCount = chunks;
+                this.sendCountMax = chunks;
 
                 for (let i = 0; i < chunks; i++) {
                     this.chunk (file, i, chunks, chunkSize);
