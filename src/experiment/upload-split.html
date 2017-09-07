@@ -10,7 +10,7 @@
 
         [[sendCount]] / [[sendCountMax]]<br>
 
-        <input type="file" name="file" id="file">
+        <input type="file" name="file" id="file" on-change="changeFile">
         <button type="button" id="btn" on-click="uploadButtonClick">upload</button>
 
         <iron-ajax
@@ -20,7 +20,6 @@
                 headers=[[headers]]
                 content-type=[[contentType]]
                 body=[[body]]
-                on-change="changeFile"
                 on-response="handleResponse"
                 debounce-duration="300"></iron-ajax>
 
@@ -77,11 +76,36 @@
                         value : 0,
                         notify: true,
                     },
+                    limitSize   : {
+                        type : Number,
+                        value: 1024 * 1000 * 5,
+                    },
+                    isReady     : {
+                        type  : Boolean,
+                        value : false,
+                        notify: true,
+                    },
                 };
             }
 
+            changeFile () {
+                const files = this.$.file.files;
+
+                if (files.length < 1) {
+                    console.log ('not find file');
+                    this.isReady = false;
+                    return false;
+                }
+
+                const file = files[0];
+
+                this.sendCountMax = Math.ceil (file.size / this.limitSize);
+
+                this.isReady = true;
+            }
+
             uploadButtonClick () {
-                if (this.sendCount === this.sendCountMax) {
+                if (this.isReady) {
                     // reset count
                     this.sendCount = 0;
                     this.sendCountMax = 0;
@@ -153,6 +177,12 @@
                 console.log (res);
 
                 this.sendCount++;
+
+                this.isReady = !UploadSplit.isFinish;
+            }
+
+            static isFinish () {
+                return (this.sendCountMax > 0 && this.sendCount === this.sendCountMax);
             }
 
             static getExtensionFromFileName (fileName) {
