@@ -99,6 +99,7 @@
 
                 const file = files[0];
 
+                this.sendCount = 0;
                 this.sendCountMax = Math.ceil (file.size / this.limitSize);
 
                 this.isReady = true;
@@ -174,8 +175,6 @@
             }
 
             handleResponse (res) {
-                console.log (res);
-
                 this.sendCount++;
 
                 this.isReady = !UploadSplit.isFinish;
