@@ -86,6 +86,10 @@
                         value : false,
                         notify: true,
                     },
+                    splitSize   : {
+                        type : Number,
+                        value: 1024 * 1000 * 5, // 5MB
+                    },
                 };
             }
 
@@ -117,9 +121,7 @@
                 }
             }
 
-            readBlob (chunkSize) {
-                chunkSize = chunkSize || 1024 * 1000 * 5;
-
+            readBlob () {
                 const files = this.$.file.files;
 
                 if (files.length < 1) {
@@ -128,25 +130,33 @@
                 }
 
                 const file = files[0];
+
+                // set some parameter
                 this.mime = file['type'];
                 this.filename = file['name'];
                 this.fileSize = file['size'];
                 this.extension = UploadSplit.getExtensionFromFileName (this.filename);
 
                 // count of repeat
-                const chunks = Math.ceil (file.size / chunkSize);
+                const chunks = Math.ceil (file.size / this.splitSize);
                 this.sendCountMax = chunks;
 
                 for (let i = 0; i < chunks; i++) {
-                    this.chunk (file, i, chunks, chunkSize);
+                    this.chunk (file, i, chunks);
                 }
             }
 
-            chunk (file, i, chunks, chunkSize) {
+            /**
+             * Read file of split by chuck size
+             * @param {object} file - the upload file
+             * @param {Number} i
+             * @param {Number} chunks - size of upload
+             */
+            chunk (file, i, chunks) {
                 const reader = new FileReader ();
 
-                const start = i * chunkSize;
-                const stop = start + chunkSize;
+                const start = i * this.splitSize;
+                const stop = start + this.splitSize;
 
                 const blob = file.slice (start, stop);
 
