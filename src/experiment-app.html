@@ -19,12 +19,30 @@
         </style>
 
         <main class="main-wrapper">
-            <upload-split></upload-split>
+            <upload-split
+                    url="http://localhost:8000/api/foo/foo/foo" ,
+                    headers=[[headers]]
+            ></upload-split>
         </main>
     </template>
     <script>
         class ExperimentApp extends Polymer.Element {
             static get is () { return 'experiment-app'; }
+
+            static get properties () {
+                return {
+                    headers: {
+                        type : Object,
+                        value: '',
+                    },
+                };
+            }
+
+            ready () {
+                super.ready ();
+
+                this.headers = {'foo': 'bar'};
+            }
         }
 
         window.customElements.define (ExperimentApp.is, ExperimentApp);

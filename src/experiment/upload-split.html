@@ -36,15 +36,16 @@
                     },
                     method      : {
                         type : String,
-                        value: '',
+                        value: 'POST',
                     },
                     headers    : {
                         type : Object,
-                        value: '',
+                        value: {},
                     },
                     contentType: {
-                        type : String,
-                        value: '',
+                        type    : String,
+                        value   : 'application/octet-stream',
+                        readOnly: true,
                     },
                     body       : {
                         type : Blob,
@@ -159,16 +160,18 @@
             }
 
             upload (blob, id, maxId) {
-                this.url = 'http://localhost:8000/api/fileupload';
-                this.method = 'POST';
-                this.headers = {
+                // Default headers
+                const prepareHeaders = {
                     'Chunk-Id'      : id,
                     'Chunk-Max-Id'  : maxId,
-                    'FILE-MIME'     : this.mime,
-                    'FILE-EXTENSION': this.extension,
+                    'File-Mime'     : this.mime,
+                    'File-Extension': this.extension,
                 };
-                this.contentType = 'application/octet-stream';
 
+                // set headers
+                this.headers = Object.assign (prepareHeaders, this.headers);
+
+                // Data
                 this.body = blob;
 
                 this.$.ajax.generateRequest ();
