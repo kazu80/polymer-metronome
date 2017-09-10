@@ -8,10 +8,11 @@
             }
         </style>
 
+        <slot></slot>
+
         [[sendCount]] / [[sendCountMax]]<br>
 
         <input type="file" name="file" id="file" on-change="changeFile">
-        <button type="button" id="btn" on-click="uploadButtonClick">upload</button>
 
         <iron-ajax
                 id="ajax"

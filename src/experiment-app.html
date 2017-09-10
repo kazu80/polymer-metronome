@@ -20,9 +20,12 @@
 
         <main class="main-wrapper">
             <upload-split
+                    id="uploadSplit"
                     url="http://localhost:8000/api/foo/foo/foo" ,
                     headers=[[headers]]
-            ></upload-split>
+            >
+                <button type="button" id="btn" on-click="btnClick">upload</button>
+            </upload-split>
         </main>
     </template>
     <script>
@@ -42,6 +45,10 @@
                 super.ready ();
 
                 this.headers = {'foo': 'bar'};
+            }
+
+            btnClick () {
+                this.$.uploadSplit.uploadButtonClick ();
             }
         }
 
