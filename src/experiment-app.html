@@ -21,9 +21,12 @@
         <main class="main-wrapper">
             <upload-split
                     id="uploadSplit"
-                    url="http://localhost:8000/api/foo/foo/foo" ,
+                    url="http://localhost:8000/api/foo/foo/foo"
                     headers=[[headers]]
+                    send-count={{sendCount}}
+                    send-count-max={{sendCountMax}}
             >
+                [[sendCount]] / [[sendCountMax]]<br>
                 <button type="button" id="btn" on-click="btnClick">upload</button>
             </upload-split>
         </main>

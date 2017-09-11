@@ -10,8 +10,6 @@
 
         <slot></slot>
 
-        [[sendCount]] / [[sendCountMax]]<br>
-
         <input type="file" name="file" id="file" on-change="changeFile">
 
         <iron-ajax
@@ -36,8 +34,9 @@
                         value: '',
                     },
                     method      : {
-                        type : String,
-                        value: 'POST',
+                        type  : String,
+                        value : 'POST',
+                        notify: true,
                     },
                     headers    : {
                         type : Object,
