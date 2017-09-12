@@ -1,4 +1,5 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="experiment/upload-split.html">
 
 <dom-module id="experiment-app">
@@ -28,6 +29,9 @@
             >
                 [[sendCount]] / [[sendCountMax]]<br>
                 <button type="button" id="btn" on-click="btnClick">upload</button>
+                <paper-button raised class="fancy btn btn-back" on-click="choice">
+                    ファイル選択
+                </paper-button>
             </upload-split>
         </main>
     </template>
@@ -52,6 +56,10 @@
 
             btnClick () {
                 this.$.uploadSplit.uploadButtonClick ();
+            }
+
+            choice () {
+                this.$.uploadSplit.choiceButtonClick ();
             }
         }
 

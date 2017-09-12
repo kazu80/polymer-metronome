@@ -5,12 +5,19 @@
     <template>
         <style>
             :host {
+
+            }
+
+            #splitUploadFile {
+                visibility : hidden;
+                height     : 0;
+                margin     : 0;
             }
         </style>
 
         <slot></slot>
 
-        <input type="file" name="file" id="file" on-change="changeFile">
+        <input type="file" name="file" id="splitUploadFile" on-change="changeFile">
 
         <iron-ajax
                 id="ajax"
@@ -94,7 +101,7 @@
             }
 
             changeFile () {
-                const files = this.$.file.files;
+                const files = this.$.splitUploadFile.files;
 
                 if (files.length < 1) {
                     console.log ('not find file');
@@ -121,8 +128,12 @@
                 }
             }
 
+            choiceButtonClick () {
+                this.$.splitUploadFile.click ();
+            }
+
             readBlob () {
-                const files = this.$.file.files;
+                const files = this.$.splitUploadFile.files;
 
                 if (files.length < 1) {
                     console.log ('not find file');
