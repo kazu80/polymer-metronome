@@ -136,7 +136,7 @@
                 const files = this.$.splitUploadFile.files;
 
                 if (files.length < 1) {
-                    console.log ('not find file');
+                    console.error ('not find file');
                     return false;
                 }
 
@@ -174,7 +174,7 @@
                 reader.onloadend = (evt) => {
                     if (evt.target.readyState === FileReader.DONE) {
                         const blob = evt.target.result;
-                        (this.upload (blob, i, chunks - 1));
+                        this.upload (blob, i, chunks - 1);
                     }
                 };
                 reader.readAsArrayBuffer (blob);
