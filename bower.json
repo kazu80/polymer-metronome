@@ -23,7 +23,8 @@
     "iron-meta": "PolymerElements/iron-meta#^2.0.2",
     "social-links": "convoo/social-links#^0.0.2",
     "polymer-redux": "^1.0.2",
-    "iron-ajax": "PolymerElements/iron-ajax#^2.0.5"
+    "iron-ajax": "PolymerElements/iron-ajax#^2.0.5",
+    "split-upload": "monkick/split-upload#^1.0.1"
   },
   "resolutions": {
     "polymer": "^2.0.0"
