@@ -1,16 +1,13 @@
 <link rel="import" href="../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
-<link rel="import" href="../bower_components/app-layout/app-layout.html">
-<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/iron-icons/av-icons.html">
 <link rel="import" href="./metronome-app.html">
 <link rel="import" href="./profile-app.html">
 <link rel="import" href="./experiment-app.html">
-
-<link rel="import" href="./components/mtrm_title.html">
+<link rel="import" href="./components/mtrm_header.html">
 
 <link rel="lazy-import" href="my-view404.html">
 
@@ -22,60 +19,14 @@
                                          --debug: {
                                              border : 1px solid #888888;
                                          };
-                --color-background       : #00aa88;
                 --margin-side            : 20px;
                 --margin-side-mb         : 3vw;
                 --margin-wrapper-main    : 0 var(--margin-side);
                 --margin-wrapper-main-mb : 0 var(--margin-side-mb);
             }
 
-            app-header {
-                color            : #ffffff;
-                background-color : var(--color-background);
-            }
-
-            mtrm-title {
-                --font-color  : #ffffff;
-                --font-family : 'Roboto', 'Noto', sans-serif;
-                --font-weight : inherit;
-            }
-
-            .main-title {
-                display        : flex;
-                align-items    : center;
-                letter-spacing : 5px;
-            }
-
-            mtrm-title {
-                position : relative;
-            }
-
-            mtrm-title iron-icon {
-                position  : absolute;
-                top       : 50%;
-                right     : -30px;
-                transform : translateY(-50%);
-            }
-
-            .menu-wrapper {
-                display         : flex;
-                flex-direction  : row;
-                justify-content : space-between;
-                width           : 100px;
-            }
-
-            .menu-wrapper a {
-                color : #ffffff;
-            }
-
-            .menu-wrapper a.iron-selected {
-                color : var(--color-fancy);
-            }
-
-            @media (max-width : 767px) {
-                .menu-wrapper {
-                    width : 25vw;
-                }
+            mtrm-header {
+                --background-color : #00aa88;
             }
 
             a {
@@ -93,27 +44,7 @@
                 tail="{{subroute}}"></app-route>
 
         <!-- Header -->
-        <app-header reveals>
-            <app-toolbar>
-                <div main-title class="main-title">
-                    <mtrm-title title="METRONOME" link="[[rootPath]]">
-                        <iron-icon icon="icons:polymer" slot="icon"></iron-icon>
-                    </mtrm-title>
-                </div>
-
-                <iron-selector class="menu-wrapper" selected="[[view]]" attr-for-selected="name" class="drawer-list" role="navigation">
-                    <a name="metronome" href="[[rootPath]]">
-                        <iron-icon icon="av:queue-music"></iron-icon>
-                    </a>
-                    <a name="profile" href="[[rootPath]]profile">
-                        <iron-icon icon="icons:face"></iron-icon>
-                    </a>
-                    <a name="experiment" href="[[rootPath]]experiment">
-                        <iron-icon icon="icons:build"></iron-icon>
-                    </a>
-                </iron-selector>
-            </app-toolbar>
-        </app-header>
+        <mtrm-header rootPath="[[rootPath]]" view="[[view]]"></mtrm-header>
 
         <!-- iron-pages -->
         <iron-pages selected="[[view]]" id="pages" attr-for-selected="name" selected-attribute="visible" fallback-selection="view404">
