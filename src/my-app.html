@@ -9,6 +9,9 @@
 <link rel="import" href="./metronome-app.html">
 <link rel="import" href="./profile-app.html">
 <link rel="import" href="./experiment-app.html">
+
+<link rel="import" href="./components/mtrm_title.html">
+
 <link rel="lazy-import" href="my-view404.html">
 
 <dom-module id="my-app">
@@ -29,6 +32,12 @@
             app-header {
                 color            : #ffffff;
                 background-color : var(--color-background);
+            }
+
+            mtrm-title {
+                --font-color  : #ffffff;
+                --font-family : 'Roboto', 'Noto', sans-serif;
+                --font-weight : inherit;
             }
 
             .main-title {
@@ -77,10 +86,9 @@
             <app-toolbar>
 
                 <div main-title class="main-title">
-                    <a href="[[rootPath]]">
-                        METRONOME
-                        <iron-icon icon="icons:polymer"></iron-icon>
-                    </a>
+                    <mtrm-title title="METRONOME" link="[[rootPath]]">
+                        <iron-icon icon="icons:polymer" slot="icon"></iron-icon>
+                    </mtrm-title>
                 </div>
 
                 <iron-selector class="menu-wrapper" selected="[[view]]" attr-for-selected="name" class="drawer-list" role="navigation">
