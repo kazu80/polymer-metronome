@@ -1,0 +1,101 @@
+<link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../metronome/element-display.html">
+<link rel="import" href="../metronome/element-lifting.html">
+<dom-module id="mtrm-component">
+    <template>
+        <style>
+            :host {
+                --wrapper-height       : 210px;
+                --wrapper-height-sp    : 150px;
+                --display-width        : 250px;
+                --display-width-sp     : 100px;
+                --display-font-size    : 34px;
+                --display-font-size-sp : 6vw;
+                --text-color           : #3f51b5;
+                --text-font-wight      : bold;
+            }
+
+            .wrapper {
+                display         : flex;
+                flex-direction  : column;
+                justify-content : space-between;
+                width           : 100%;
+                height          : var(--wrapper-height);
+            }
+
+            @media (max-width : 767px) {
+                .wrapper {
+                    height : var(--wrapper-height-sp);
+                }
+            }
+
+            ul {
+                display         : flex;
+                flex-direction  : row;
+                justify-content : space-around;
+                padding         : 0;
+                margin          : 0;
+                width           : var(--display-width);
+                font-size       : var(--display-font-size);
+            }
+
+            @media (max-width : 767px) {
+                ul {
+                    width     : var(--display-width-sp);
+                    font-size : var(--display-font-size-sp);
+                }
+            }
+
+            ul li {
+                list-style : none;
+            }
+
+            .active {
+                color       : var(--text-color);
+                font-weight : var(--text-font-wight);
+            }
+
+
+        </style>
+
+        <div class="wrapper">
+            <div class="title">[[title]]</div>
+            <element-display add-class="center">
+                <ul>
+                    <template is="dom-repeat" items="{{params}}">
+                        <template is="dom-if" if="{{item.active}}">
+                            <li class="active">[[item.id]]</li>
+                        </template>
+                        <template is="dom-if" if="{{!item.active}}">
+                            <li>[[item.id]]</li>
+                        </template>
+                    </template>
+                </ul>
+            </element-display>
+
+            <element-lifting params="[[params]]" param="{{param}}"></element-lifting>
+        </div>
+    </template>
+    <script>
+        class MtrmComponent extends Polymer.Element {
+            static get is () { return 'mtrm-component'; }
+
+            static get properties () {
+                return {
+                    title : {
+                        type: String,
+                    },
+                    params: {
+                        type: Array,
+                    },
+                    param : {
+                        type  : Number,
+                        notify: true,
+                    },
+                };
+            }
+        }
+
+        window.customElements.define (MtrmComponent.is, MtrmComponent);
+    </script>
+</dom-module>

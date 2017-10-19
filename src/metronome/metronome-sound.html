@@ -1,65 +1,19 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../redux-store.html">
-<link rel="import" href="./element-display.html">
-<link rel="import" href="./element-lifting.html">
+<link rel="import" href="../components/mtrm_component.html">
 
 <dom-module id="metronome-sound">
     <template>
         <style>
             :host {
-                width : 100%;
             }
 
-            .sound-wrapper {
-                display         : flex;
-                flex-direction  : column;
-                justify-content : space-between;
-                width           : 100%;
-                height          : 210px;
-            }
-
-            @media (max-width : 767px) {
-                .sound-wrapper {
-                    height : 150px;
-                }
-            }
-
-            ul {
-                padding   : 0;
-                margin    : 0;
-                font-size : 65px;
-            }
-
-            ul li {
-                display       : inline;
-                padding-right : 5px;
-            }
-
-            @media (max-width : 767px) {
-                ul {
-                    font-size : 6vw;
-                }
+            mtrm-component {
+                --display-font-size : 65px;
             }
         </style>
 
-        <div class="sound-wrapper">
-            <div class="title">SOUND</div>
-            <element-display add-class="center">
-                <ul>
-                    <template is="dom-repeat" items="{{sounds}}">
-                        <template is="dom-if" if="{{item.active}}">
-                            <li style="color: #3f51b5; font-weight: bold">[[item.id]]</li>
-                        </template>
-                        <template is="dom-if" if="{{!item.active}}">
-                            <li>[[item.id]]</li>
-                        </template>
-                    </template>
-                </ul>
-            </element-display>
-
-            <element-lifting params="[[sounds]]" param="{{sound}}"></element-lifting>
-        </div>
+        <mtrm-component title="SOUND" params="{{sounds}}" param="{{sound}}"></mtrm-component>
     </template>
     <script>
         /* eslint-disable new-cap,no-undef */
