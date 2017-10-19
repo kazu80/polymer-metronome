@@ -1,4 +1,5 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
+<link rel="import" href="../metronome/element-card.html">
 <link rel="import" href="../metronome/element-display.html">
 <link rel="import" href="../metronome/element-lifting.html">
 <dom-module id="mtrm-component">
@@ -58,23 +59,25 @@
 
         </style>
 
-        <div class="wrapper">
-            <div class="title">[[title]]</div>
-            <element-display add-class="center">
-                <ul>
-                    <template is="dom-repeat" items="{{params}}">
-                        <template is="dom-if" if="{{item.active}}">
-                            <li class="active">[[item.id]]</li>
+        <element-card>
+            <div class="wrapper">
+                <div class="title">[[title]]</div>
+                <element-display add-class="center">
+                    <ul>
+                        <template is="dom-repeat" items="{{params}}">
+                            <template is="dom-if" if="{{item.active}}">
+                                <li class="active">[[item.id]]</li>
+                            </template>
+                            <template is="dom-if" if="{{!item.active}}">
+                                <li>[[item.id]]</li>
+                            </template>
                         </template>
-                        <template is="dom-if" if="{{!item.active}}">
-                            <li>[[item.id]]</li>
-                        </template>
-                    </template>
-                </ul>
-            </element-display>
+                    </ul>
+                </element-display>
 
-            <element-lifting params="[[params]]" param="{{param}}"></element-lifting>
-        </div>
+                <element-lifting params="[[params]]" param="{{param}}"></element-lifting>
+            </div>
+        </element-card>
     </template>
     <script>
         class MtrmComponent extends Polymer.Element {
