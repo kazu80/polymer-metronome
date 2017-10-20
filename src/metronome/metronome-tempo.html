@@ -1,61 +1,15 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../../bower_components/paper-slider/paper-slider.html">
-<link rel="import" href="../../bower_components/paper-progress/paper-progress.html">
 <link rel="import" href="../redux-store.html">
-<link rel="import" href="./element-display.html">
+<link rel="import" href="../components/mtrm_component.html">
 
 <dom-module id="metronome-tempo">
     <template>
         <style>
             :host {
-                width : 100%;
-            }
-
-            .tempo-wrapper {
-                display         : flex;
-                flex-direction  : column;
-                justify-content : space-between;
-                width           : 100%;
-                height          : 210px;
-            }
-
-            @media (max-width : 767px) {
-                .tempo-wrapper {
-                    height : 150px;
-                }
-            }
-
-            .action-wrapper {
-                display         : flex;
-                flex-direction  : row;
-                justify-content : space-between;
-                width           : 100%;
-            }
-
-            .action-wrapper paper-slider {
-                width : 100%;
-            }
-
-            paper-button.fancy {
-                background-color : #3f51b5;
-                color            : #ffffff;
-            }
-
-            .btn {
-                margin : 0;
-                width  : 48%;
             }
         </style>
 
-        <div class="tempo-wrapper">
-            <div class="title">TEMPO</div>
-            <element-display>[[tempo]]</element-display>
-
-            <div class="action-wrapper">
-                <paper-slider pin="true" value="{{tempo}}" min="1" max="255" step="1"></paper-slider>
-            </div>
-        </div>
+        <mtrm-component title="TEMPO" params="{{tempos}}" param="{{tempo}}" type="slider"></mtrm-component>
     </template>
     <script>
         class MetronomeTempo extends ReduxBehavior (Polymer.Element) {
@@ -63,11 +17,19 @@
 
             static get properties () {
                 return {
-                    tempo: {
+                    tempo : {
                         type     : Number,
                         value    : 120,
                         statePath: 'tempo',
                         observer : '_observerTempo',
+                    },
+                    tempos: {
+                        type : Object,
+                        value: {
+                            min : 1,
+                            max : 255,
+                            step: 1,
+                        },
                     },
                 };
             }
