@@ -1,5 +1,8 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/paper-slider/paper-slider.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/iron-icons/maps-icons.html">
+<link rel="import" href="../../bower_components/iron-icons/av-icons.html">
 <link rel="import" href="../metronome/element-card.html">
 <link rel="import" href="../metronome/element-display.html">
 <link rel="import" href="../metronome/element-lifting.html">
@@ -15,6 +18,11 @@
                 --display-font-size-sp : 6vw;
                 --text-color           : #3f51b5;
                 --text-font-wight      : bold;
+                --color-fancy          : #3f51b5;
+            }
+
+            .fancy {
+                background-color : var(--color-fancy);
             }
 
             .wrapper {
@@ -68,29 +76,47 @@
                 width : 100%;
             }
 
+            .btn-play {
+                width : fit-content;
+            }
+
+            .btn-play iron-icon {
+                color : #ffffff;
+            }
+
         </style>
 
         <element-card>
             <div class="wrapper">
-                <div class="title">[[title]]</div>
-                <element-display add-class="center">
-                    <template is="dom-if" if="{{isTypeSlider}}">
-                        [[param]]
-                    </template>
-                    <template is="dom-if" if="{{isTypeLifting}}">
-                        <ul>
-                            <template is="dom-repeat" items="{{params}}">
-                                <template is="dom-if" if="{{item.active}}">
-                                    <li class="active">[[item.id]]</li>
-                                </template>
-                                <template is="dom-if" if="{{!item.active}}">
-                                    <li>[[item.id]]</li>
-                                </template>
-                            </template>
-                        </ul>
-                    </template>
-                </element-display>
+                <!-- title -->
+                <template is="dom-if" if="{{!isTypePlay}}">
+                    <div class="title">[[title]]</div>
+                </template>
+                <!-- /title -->
 
+                <!-- display -->
+                <template is="dom-if" if="{{!isTypePlay}}">
+                    <element-display add-class="center">
+                        <template is="dom-if" if="{{isTypeSlider}}">
+                            [[param]]
+                        </template>
+                        <template is="dom-if" if="{{isTypeLifting}}">
+                            <ul>
+                                <template is="dom-repeat" items="{{params}}">
+                                    <template is="dom-if" if="{{item.active}}">
+                                        <li class="active">[[item.id]]</li>
+                                    </template>
+                                    <template is="dom-if" if="{{!item.active}}">
+                                        <li>[[item.id]]</li>
+                                    </template>
+                                </template>
+                            </ul>
+                        </template>
+                    </element-display>
+                </template>
+                <!-- /display -->
+
+                <!-- action -->
                 <template is="dom-if" if="{{isTypeLifting}}">
                     <element-lifting params="[[params]]" param="{{param}}"></element-lifting>
                 </template>
@@ -100,6 +126,18 @@
                         <paper-slider pin="true" value="{{param}}" min="{{params.min}}" max="{{params.max}}" step="{{params.step}}"></paper-slider>
                     </div>
                 </template>
+
+                <template is="dom-if" if="{{isTypePlay}}">
+                    <paper-button raised class="fancy btn btn-play" on-click="clickPlayButton">
+                        <template is="dom-if" if="{{params.isPlay}}">
+                            <iron-icon icon="av:stop"></iron-icon>
+                        </template>
+                        <template is="dom-if" if="{{!params.isPlay}}">
+                            <iron-icon icon="av:play-arrow"></iron-icon>
+                        </template>
+                    </paper-button>
+                </template>
+                <!-- /action -->
             </div>
         </element-card>
     </template>
@@ -134,6 +172,11 @@
             _observerType (val) {
                 this.isTypeLifting = val === 'lifting';
                 this.isTypeSlider = val === 'slider';
+                this.isTypePlay = val === 'play';
+            }
+
+            clickPlayButton () {
+                this.dispatchEvent (new CustomEvent ('play'));
             }
         }
 

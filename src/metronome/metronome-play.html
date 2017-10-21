@@ -1,9 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
-<link rel="import" href="../../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../../bower_components/iron-icons/maps-icons.html">
-<link rel="import" href="../../bower_components/iron-icons/av-icons.html">
 <link rel="import" href="../redux-store.html">
-<link rel="import" href="./element-display.html">
+<link rel="import" href="../components/mtrm_component.html">
 
 <dom-module id="metronome-play">
     <template>
@@ -23,18 +20,26 @@
                 }
             }
 
+            mtrm-component {
+                --wrapper-height    : auto;
+                --wrapper-height-sp : auto;
+            }
+
         </style>
 
+        <mtrm-component id="play" type="play" params="{{params}}" param="{{param}}"></mtrm-component>
+        <!--
         <div class="action-wrapper">
             <paper-button id="playButton" raised class="fancy btn btn-play" on-click="play">
                 <template is="dom-if" if="{{isPlay}}">
                     <iron-icon icon="av:stop"></iron-icon>
                 </template>
                 <template is="dom-if" if="{{!isPlay}}">
-                    <iron-icon icon="av:av:play-arrow"></iron-icon>
+                    <iron-icon icon="av:play-arrow"></iron-icon>
                 </template>
             </paper-button>
         </div>
+        -->
 
     </template>
     <script>
@@ -87,6 +92,13 @@
                         statePath: 'volume',
                     },
                     animationTempo: Object,
+
+                    params: {
+                        type : Object,
+                        value: {},
+                    },
+
+                    param: {},
                 };
             }
 
@@ -99,11 +111,20 @@
             ready () {
                 super.ready ();
 
+                const el = this.$.play;
+                if (el) {
+                    el.addEventListener ('play', (e) => {
+                        this.play ();
+                    });
+                }
+
                 // set animation
+                /*
                 this.animationTempo = this.$.playButton.animate (
                     {transform: ['scale(1.1, 1.1)', 'scale(1.0, 1.0)']},
                     {duration: 100}
                 );
+                */
             }
 
             initialTempo (buffer, gain) {
@@ -137,6 +158,7 @@
             }
 
             play () {
+                console.log ('play');
                 this.isPlay = !this.isPlay;
             }
 
