@@ -1,11 +1,9 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/paper-slider/paper-slider.html">
-<link rel="import" href="../../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../../bower_components/iron-icons/maps-icons.html">
-<link rel="import" href="../../bower_components/iron-icons/av-icons.html">
 <link rel="import" href="../metronome/element-card.html">
 <link rel="import" href="../metronome/element-display.html">
 <link rel="import" href="../metronome/element-lifting.html">
+<link rel="import" href="./mtrm_button_play.html">
 <dom-module id="mtrm-component">
     <template>
         <style>
@@ -75,15 +73,6 @@
             .slider-wrapper paper-slider {
                 width : 100%;
             }
-
-            .btn-play {
-                width : fit-content;
-            }
-
-            .btn-play iron-icon {
-                color : #ffffff;
-            }
-
         </style>
 
         <element-card>
@@ -128,14 +117,7 @@
                 </template>
 
                 <template is="dom-if" if="{{isTypePlay}}">
-                    <paper-button raised class="fancy btn btn-play" on-click="clickPlayButton">
-                        <template is="dom-if" if="{{params.isPlay}}">
-                            <iron-icon icon="av:stop"></iron-icon>
-                        </template>
-                        <template is="dom-if" if="{{!params.isPlay}}">
-                            <iron-icon icon="av:play-arrow"></iron-icon>
-                        </template>
-                    </paper-button>
+                    <mtrm-button-play id="playButton" isPlayState="{{params.isPlay}}" on-dom-change="_onDomChange"></mtrm-button-play>
                 </template>
                 <!-- /action -->
             </div>
@@ -169,14 +151,23 @@
                 super ();
             }
 
+            ready () {
+                super.ready ();
+            }
+
+            _onDomChange () {
+                const el = this.shadowRoot.querySelector ('#playButton');
+                if (el) {
+                    el.addEventListener ('play', (e) => {
+                        this.dispatchEvent (new CustomEvent ('play'));
+                    });
+                }
+            }
+
             _observerType (val) {
                 this.isTypeLifting = val === 'lifting';
                 this.isTypeSlider = val === 'slider';
                 this.isTypePlay = val === 'play';
-            }
-
-            clickPlayButton () {
-                this.dispatchEvent (new CustomEvent ('play'));
             }
         }
 

@@ -95,7 +95,9 @@
 
                     params: {
                         type : Object,
-                        value: {},
+                        value: {
+                            animation: false,
+                        },
                     },
 
                     param: {},
@@ -158,7 +160,6 @@
             }
 
             play () {
-                console.log ('play');
                 this.isPlay = !this.isPlay;
             }
 
@@ -186,7 +187,8 @@
                         count % this.beat === 0 ? this._playBeat () : this._playTempo ();
 
                         // animation execute
-                        this.animationTempo.play ();
+                        // this.animationTempo.play ();
+                        this.params.animation = true;
 
                         count++;
                     }, 60 * 1000 / this.tempo);
@@ -199,7 +201,8 @@
                         this.interval = 0;
 
                         // animation stop
-                        this.animationTempo.cancel ();
+                        // this.animationTempo.cancel ();
+                        this.params.animation = false;
                     }
                 }
             }
