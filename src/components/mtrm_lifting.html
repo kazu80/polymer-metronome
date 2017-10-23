@@ -2,7 +2,7 @@
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 
-<dom-module id="element-lifting">
+<dom-module id="mtrm-lifting">
     <template>
         <style>
             :host {
@@ -44,8 +44,8 @@
     </template>
 
     <script>
-        class ElementLifting extends Polymer.Element {
-            static get is () { return 'element-lifting'; }
+        class MtrmLifting extends Polymer.Element {
+            static get is () { return 'mtrm-lifting'; }
 
             static get properties () {
                 return {
@@ -72,6 +72,6 @@
             }
         }
 
-        window.customElements.define (ElementLifting.is, ElementLifting);
+        window.customElements.define (MtrmLifting.is, MtrmLifting);
     </script>
 </dom-module>

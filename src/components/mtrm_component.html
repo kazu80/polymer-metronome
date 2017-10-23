@@ -1,9 +1,9 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../../bower_components/paper-slider/paper-slider.html">
-<link rel="import" href="../metronome/element-card.html">
-<link rel="import" href="../metronome/element-display.html">
-<link rel="import" href="../metronome/element-lifting.html">
 <link rel="import" href="./mtrm_button_play.html">
+<link rel="import" href="./mtrm_card.html">
+<link rel="import" href="./mtrm_display.html">
+<link rel="import" href="./mtrm_lifting.html">
 <dom-module id="mtrm-component">
     <template>
         <style>
@@ -75,7 +75,7 @@
             }
         </style>
 
-        <element-card>
+        <mtrm-card>
             <div class="wrapper">
                 <!-- title -->
                 <template is="dom-if" if="{{!isTypePlay}}">
@@ -85,7 +85,7 @@
 
                 <!-- display -->
                 <template is="dom-if" if="{{!isTypePlay}}">
-                    <element-display add-class="center">
+                    <mtrm-display add-class="center">
                         <template is="dom-if" if="{{isTypeSlider}}">
                             [[param]]
                         </template>
@@ -101,13 +101,13 @@
                                 </template>
                             </ul>
                         </template>
-                    </element-display>
+                    </mtrm-display>
                 </template>
                 <!-- /display -->
 
                 <!-- action -->
                 <template is="dom-if" if="{{isTypeLifting}}">
-                    <element-lifting params="[[params]]" param="{{param}}"></element-lifting>
+                    <mtrm-lifting params="[[params]]" param="{{param}}"></mtrm-lifting>
                 </template>
 
                 <template is="dom-if" if="{{isTypeSlider}}">
@@ -121,7 +121,7 @@
                 </template>
                 <!-- /action -->
             </div>
-        </element-card>
+        </mtrm-card>
     </template>
     <script>
         class MtrmComponent extends Polymer.Element {

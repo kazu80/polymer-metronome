@@ -1,6 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 
-<dom-module id="element-display">
+<dom-module id="mtrm-display">
     <template>
         <style>
             :host {
@@ -8,12 +8,12 @@
             }
 
             .display-wrapper {
-                display         : flex;
-                align-items     : center;
-                padding         : 10px;
-                height          : 80px;
-                border          : 1px solid #888888;
-                border-radius   : 4px;
+                display       : flex;
+                align-items   : center;
+                padding       : 10px;
+                height        : 80px;
+                border        : 1px solid #888888;
+                border-radius : 4px;
             }
 
             @media (max-width : 767px) {
@@ -63,8 +63,8 @@
 
     </template>
     <script>
-        class ElementDisplay extends Polymer.Element {
-            static get is () { return 'element-display'; }
+        class MtrmDisplay extends Polymer.Element {
+            static get is () { return 'mtrm-display'; }
 
             static get properties () {
                 return {
@@ -81,6 +81,6 @@
             }
         }
 
-        window.customElements.define (ElementDisplay.is, ElementDisplay);
+        window.customElements.define (MtrmDisplay.is, MtrmDisplay);
     </script>
 </dom-module>
