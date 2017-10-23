@@ -92,14 +92,13 @@
                         statePath: 'volume',
                     },
                     animationTempo: Object,
-
                     params: {
                         type : Object,
                         value: {
                             animation: false,
+                            count    : 0,
                         },
                     },
-
                     param: {},
                 };
             }
@@ -189,6 +188,8 @@
                         // animation execute
                         // this.animationTempo.play ();
                         this.params.animation = true;
+                        this.params.count = count;
+                        console.log (this.params.count);
 
                         count++;
                     }, 60 * 1000 / this.tempo);
@@ -203,6 +204,7 @@
                         // animation stop
                         // this.animationTempo.cancel ();
                         this.params.animation = false;
+                        this.params.count = 0;
                     }
                 }
             }

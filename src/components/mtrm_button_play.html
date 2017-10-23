@@ -38,6 +38,10 @@
 
             static get properties () {
                 return {
+                    count         : {
+                        type    : Number,
+                        observer: '_observerCount',
+                    },
                     isPlayState   : {
                         type    : Boolean,
                         value   : false,
@@ -65,16 +69,22 @@
             }
 
             _observerPlay (least, past) {
-                console.log (least);
                 if (least) {
                     // animation execute
-                    this.animationTempo.play ();
+                    // this.animationTempo.play ();
                 }
                 else {
                     if (this.animationTempo) {
                         // animation stop
-                        this.animationTempo.cancel ();
+                        // this.animationTempo.cancel ();
                     }
+                }
+            }
+
+            _observerCount (least, past) {
+                console.log (least);
+                if (this.animationTempo) {
+                    this.animationTempo.play ();
                 }
             }
         }
