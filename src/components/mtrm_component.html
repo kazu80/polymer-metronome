@@ -117,8 +117,7 @@
                 </template>
 
                 <template is="dom-if" if="{{isTypePlay}}">
-                    - {{params.count}} -
-                    <mtrm-button-play id="playButton" count="{{params.count}}" isPlayState="{{params.isPlay}}" on-dom-change="_onDomChange"></mtrm-button-play>
+                    <mtrm-button-play id="playButton" cnt="{{param}}" on-dom-change="_onDomChange"></mtrm-button-play>
                 </template>
                 <!-- /action -->
             </div>
@@ -134,8 +133,8 @@
                         type: String,
                     },
                     params: {
-                        type    : Array,
-                        observer: '_observerParams',
+                        type  : Array,
+                        notify: true,
                     },
                     param : {
                         type  : Number,
@@ -170,10 +169,6 @@
                 this.isTypeLifting = val === 'lifting';
                 this.isTypeSlider = val === 'slider';
                 this.isTypePlay = val === 'play';
-            }
-
-            _observerParams () {
-                console.log ('observerParams');
             }
         }
 

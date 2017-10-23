@@ -27,19 +27,7 @@
 
         </style>
 
-        <mtrm-component id="play" type="play" params="{{params}}" param="{{param}}"></mtrm-component>
-        <!--
-        <div class="action-wrapper">
-            <paper-button id="playButton" raised class="fancy btn btn-play" on-click="play">
-                <template is="dom-if" if="{{isPlay}}">
-                    <iron-icon icon="av:stop"></iron-icon>
-                </template>
-                <template is="dom-if" if="{{!isPlay}}">
-                    <iron-icon icon="av:play-arrow"></iron-icon>
-                </template>
-            </paper-button>
-        </div>
-        -->
+        <mtrm-component id="play" type="play" params="{{params}}" param="{{beatCount}}"></mtrm-component>
 
     </template>
     <script>
@@ -74,32 +62,33 @@
                         statePath: 'soundFileTempo',
                         observer : '_observerSoundFileTempo',
                     },
-                    soundFileBeat : {
+                    soundFileBeat   : {
                         type     : String,
                         statePath: 'soundFileBeat',
                         observer : '_observerSoundFileBeat',
                     },
-                    tempo         : {
+                    tempo           : {
                         type     : Number,
                         statePath: 'tempo',
                     },
-                    beat          : {
+                    beat            : {
                         type     : Number,
                         statePath: 'beat',
                     },
-                    volume        : {
+                    beatCount       : {
+                        type : Number,
+                        value: 0,
+                    },
+                    volume          : {
                         type     : Number,
                         statePath: 'volume',
                     },
-                    animationTempo: Object,
-                    params: {
+                    animationTempo  : Object,
+                    params          : {
                         type : Object,
                         value: {
-                            animation: false,
-                            count    : 0,
                         },
                     },
-                    param: {},
                 };
             }
 
@@ -118,14 +107,6 @@
                         this.play ();
                     });
                 }
-
-                // set animation
-                /*
-                this.animationTempo = this.$.playButton.animate (
-                    {transform: ['scale(1.1, 1.1)', 'scale(1.0, 1.0)']},
-                    {duration: 100}
-                );
-                */
             }
 
             initialTempo (buffer, gain) {
@@ -185,11 +166,8 @@
                         //
                         count % this.beat === 0 ? this._playBeat () : this._playTempo ();
 
-                        // animation execute
-                        // this.animationTempo.play ();
-                        this.params.animation = true;
-                        this.params.count = count;
-                        console.log (this.params.count);
+                        //
+                        this.beatCount = count;
 
                         count++;
                     }, 60 * 1000 / this.tempo);
@@ -201,10 +179,8 @@
                         //
                         this.interval = 0;
 
-                        // animation stop
-                        // this.animationTempo.cancel ();
-                        this.params.animation = false;
-                        this.params.count = 0;
+                        //
+                        this.beatCount = 0;
                     }
                 }
             }
