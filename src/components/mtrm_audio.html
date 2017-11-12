@@ -4,10 +4,93 @@
     <template></template>
     <script>
         /**
-         * sound file pathをもらって、音を鳴らす
+         * sound file path, volumeをもらって、音を鳴らす
          */
         class MtrmAudio extends Polymer.Element {
             static get is () { return 'mtrm-audio'; }
+
+            static get properties () {
+                return {
+                    context    : Object,
+                    soundSource: Object,
+                    soundGain  : Object,
+                    src        : {
+                        type    : String,
+                        notify  : true,
+                        observer: '_observerSRC',
+                    },
+                    volume     : {
+                        type: Number,
+                    },
+                    play       : {
+                        type    : Boolean,
+                        value   : false,
+                        observer: '_observerPlay',
+                    },
+                };
+            }
+
+            constructor () {
+                super ();
+
+                this.context = new AudioContext ();
+            }
+
+            _observerSRC (src) {
+                this._loadBufferFromURL (src, (buffer) => {
+                    this.initialTempo (buffer, this.volume * 0.1);
+                });
+            }
+
+            // Loading file
+            _loadBufferFromURL (url, callback) {
+                const request = new XMLHttpRequest ();
+                request.open ('GET', url, true);
+                request.responseType = 'arraybuffer';
+
+                request.onload = () => {
+                    this.context.decodeAudioData (request.response,
+                                                  function (buffer) {
+                                                      if (!buffer) {
+                                                          alert ('error decoding file data: ' + url);
+                                                          return;
+                                                      }
+
+                                                      callback (buffer);
+                                                  },
+                                                  function (error) {
+                                                      console.error ('decodeAudioData error', error);
+                                                  }
+                    );
+                };
+
+                request.onerror = function () {
+                    alert ('BufferLoader: XHR error');
+                };
+
+                request.send ();
+            }
+
+            initialSound (buffer, gain) {
+                this.soundSource = this.context.createBufferSource ();
+                this.soundGain = this.context.createGain ();
+
+                this.soundSource.buffer = buffer;
+                this.soundGain.gain.value = gain;
+
+                this.soundGain.connect (this.context.destination);
+                this.soundSource.connect (this.soundGain);
+
+                this.soundSource.onended = () => {
+                    this.initialSound (buffer, this.volume * 0.1);
+                };
+            }
+
+            _observerPlay () {
+                if (this.play === true) {
+                    this.soundSource.start (0);
+                }
+            }
         }
 
         window.customElements.define (MtrmAudio.is, MtrmAudio);
