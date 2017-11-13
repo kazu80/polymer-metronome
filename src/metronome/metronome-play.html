@@ -1,6 +1,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
 <link rel="import" href="../redux-store.html">
 <link rel="import" href="../components/mtrm_component.html">
+<link rel="import" href="../components/mtrm_audio.html">
 
 <dom-module id="metronome-play">
     <template>
@@ -27,6 +28,11 @@
 
         </style>
 
+        <mtrm-audio src="../../sound/s_01.mp3" volume="5" play="{{isSound}}"></mtrm-audio>
+        <div>
+            <button on-click="soundTest">Sound</button>
+        </div>
+
         <mtrm-component id="play" type="play" params="{{params}}" param="{{beatCount}}"></mtrm-component>
 
     </template>
@@ -43,6 +49,12 @@
                     soundSourceBeat : Object,
                     soundGainTempo  : Object,
                     soundGainBeat   : Object,
+
+                    isSound: {
+                        type  : Boolean,
+                        value : false,
+                        notify: true,
+                    },
 
                     isPlay         : {
                         type    : Boolean,
@@ -220,6 +232,11 @@
                 };
 
                 request.send ();
+            }
+
+            //
+            soundTest () {
+                this.isSound = true;
             }
         }
 

@@ -1,5 +1,4 @@
 <link rel="import" href="../../bower_components/polymer/polymer-element.html">
-
 <dom-module id="mtrm-audio">
     <template></template>
     <script>
@@ -25,6 +24,7 @@
                     play       : {
                         type    : Boolean,
                         value   : false,
+                        notify  : true,
                         observer: '_observerPlay',
                     },
                 };
@@ -36,9 +36,13 @@
                 this.context = new AudioContext ();
             }
 
+            ready () {
+                super.ready ();
+            }
+
             _observerSRC (src) {
                 this._loadBufferFromURL (src, (buffer) => {
-                    this.initialTempo (buffer, this.volume * 0.1);
+                    this.initialSound (buffer, this.volume * 0.1);
                 });
             }
 
@@ -82,6 +86,7 @@
                 this.soundSource.connect (this.soundGain);
 
                 this.soundSource.onended = () => {
+                    this.play = false;
                     this.initialSound (buffer, this.volume * 0.1);
                 };
             }
