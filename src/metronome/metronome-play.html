@@ -28,10 +28,8 @@
 
         </style>
 
-        <mtrm-audio src="../../sound/s_01.mp3" volume="5" play="{{isSound}}"></mtrm-audio>
-        <div>
-            <button on-click="soundTest">Sound</button>
-        </div>
+        <mtrm-audio tempo src="{{soundFileTempo}}" volume="{{volume}}" play="{{isSoundTempo}}"></mtrm-audio>
+        <mtrm-audio beat src="{{soundFileBeat}}" volume="{{volume}}" play="{{isSoundBeat}}"></mtrm-audio>
 
         <mtrm-component id="play" type="play" params="{{params}}" param="{{beatCount}}"></mtrm-component>
 
@@ -44,18 +42,16 @@
 
             static get properties () {
                 return {
-                    context         : Object,
-                    soundSourceTempo: Object,
-                    soundSourceBeat : Object,
-                    soundGainTempo  : Object,
-                    soundGainBeat   : Object,
-
-                    isSound: {
+                    isSoundTempo   : {
                         type  : Boolean,
                         value : false,
                         notify: true,
                     },
-
+                    isSoundBeat    : {
+                        type  : Boolean,
+                        value : false,
+                        notify: true,
+                    },
                     isPlay         : {
                         type    : Boolean,
                         value   : false,
@@ -72,42 +68,32 @@
                     soundFileTempo : {
                         type     : String,
                         statePath: 'soundFileTempo',
-                        observer : '_observerSoundFileTempo',
                     },
                     soundFileBeat   : {
                         type     : String,
                         statePath: 'soundFileBeat',
-                        observer : '_observerSoundFileBeat',
                     },
                     tempo           : {
                         type     : Number,
                         statePath: 'tempo',
                     },
-                    beat            : {
+                    beat           : {
                         type     : Number,
                         statePath: 'beat',
                     },
-                    beatCount       : {
+                    beatCount      : {
                         type : Number,
                         value: 0,
                     },
-                    volume          : {
+                    volume         : {
                         type     : Number,
                         statePath: 'volume',
                     },
-                    animationTempo  : Object,
-                    params          : {
+                    params         : {
                         type : Object,
-                        value: {
-                        },
+                        value: {},
                     },
                 };
-            }
-
-            constructor () {
-                super ();
-
-                this.context = new AudioContext ();
             }
 
             ready () {
@@ -121,58 +107,14 @@
                 }
             }
 
-            initialTempo (buffer, gain) {
-                this.soundSourceTempo = this.context.createBufferSource ();
-                this.soundGainTempo = this.context.createGain ();
-
-                this.soundSourceTempo.buffer = buffer;
-                this.soundGainTempo.gain.value = gain;
-
-                this.soundGainTempo.connect (this.context.destination);
-                this.soundSourceTempo.connect (this.soundGainTempo);
-
-                this.soundSourceTempo.onended = () => {
-                    this.initialTempo (buffer, this.volume * 0.1);
-                };
-            }
-
-            initialBeat (buffer, gain) {
-                this.soundSourceBeat = this.context.createBufferSource ();
-                this.soundGainBeat = this.context.createGain ();
-
-                this.soundSourceBeat.buffer = buffer;
-                this.soundGainBeat.gain.value = gain;
-
-                this.soundGainBeat.connect (this.context.destination);
-                this.soundSourceBeat.connect (this.soundGainBeat);
-
-                this.soundSourceBeat.onended = () => {
-                    this.initialBeat (buffer, this.volume * 0.1);
-                };
-            }
-
             play () {
                 this.isPlay = !this.isPlay;
-            }
-
-            //
-            _observerSoundFileTempo (latest, old) {
-                this._loadBufferFromURL (latest, (buffer) => {
-                    this.initialTempo (buffer, this.volume * 0.1);
-                });
-            }
-
-            //
-            _observerSoundFileBeat (latest, old) {
-                this._loadBufferFromURL (latest, (buffer) => {
-                    this.initialBeat (buffer, this.volume * 0.1);
-                });
             }
 
             // Playボタンのオブザーバー
             _observerPlay (val, old) {
                 if (val) {
-                    let count = 0;
+                    let count = 1;
 
                     this.interval = setInterval (() => {
                         //
@@ -198,45 +140,11 @@
             }
 
             _playBeat () {
-                this.soundSourceBeat.start (0);
+                this.isSoundBeat = true;
             }
 
             _playTempo () {
-                this.soundSourceTempo.start (0);
-            }
-
-            // Loading file
-            _loadBufferFromURL (url, callback) {
-                const request = new XMLHttpRequest ();
-                request.open ('GET', url, true);
-                request.responseType = 'arraybuffer';
-
-                request.onload = () => {
-                    this.context.decodeAudioData (request.response,
-                                                  function (buffer) {
-                                                      if (!buffer) {
-                                                          alert ('error decoding file data: ' + url);
-                                                          return;
-                                                      }
-
-                                                      callback (buffer);
-                                                  },
-                                                  function (error) {
-                                                      console.error ('decodeAudioData error', error);
-                                                  }
-                    );
-                };
-
-                request.onerror = function () {
-                    alert ('BufferLoader: XHR error');
-                };
-
-                request.send ();
-            }
-
-            //
-            soundTest () {
-                this.isSound = true;
+                this.isSoundTempo = true;
             }
         }
 
